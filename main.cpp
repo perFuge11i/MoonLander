@@ -1,7 +1,15 @@
+//FOR MOON LANDER
+#include "Landscape.hpp"
 
+int main() {
+    Landscape Landscape();
 
+    Canvas canvas("Snake");
+    GLRenderer renderer(canvas.size());
+}
 
-/* FOR SNAKE
+/*
+//FOR SNAKE
 #include "SnakeScene.hpp"
 
 int main() {
@@ -24,7 +32,6 @@ int main() {
 
     Clock clock;
     canvas.animate([&]() {
-
         float dt = clock.getDelta();
 
         if (game.isRunning()) {
