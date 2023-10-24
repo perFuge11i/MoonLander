@@ -20,7 +20,7 @@ public:
 
     explicit SnakeGame(int gridSize)
             : gridSize_(gridSize),
-              snake_(gridSize / 2, gridSize / 2) {
+              snake_(gridSize, gridSize) {
 
         reset();
     }

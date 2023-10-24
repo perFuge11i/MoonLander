@@ -1,11 +1,15 @@
 //FOR MOON LANDER
 #include "Landscape.hpp"
+#include "MoonScene.hpp"
 
 int main() {
-    Landscape Landscape();
-
-    Canvas canvas("Snake");
+    Canvas canvas("MoonLander");
     GLRenderer renderer(canvas.size());
+    auto scene = MoonScene();
+
+    canvas.animate([&]() {
+        renderer.render(scene, scene.camera());
+    });
 }
 
 /*
