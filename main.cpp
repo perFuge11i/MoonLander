@@ -1,10 +1,10 @@
 //FOR MOON LANDER
-#include "Landscape.hpp"
+#include "Spaceship.hpp"
 #include "MoonScene.hpp"
 
 int main() {
-    Canvas canvas("MoonLander");
-    GLRenderer renderer(canvas.size());
+    threepp::Canvas canvas("MoonLander");
+    threepp::GLRenderer renderer(canvas.size());
     auto scene = MoonScene();
 
     canvas.animate([&]() {
