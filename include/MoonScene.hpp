@@ -4,8 +4,6 @@
 #include "Landscape.hpp"
 #include <iostream>
 
-//using namespace threepp;
-
 
 class MoonScene : public threepp::Scene {
 private:
@@ -19,16 +17,20 @@ public:
         camera_->position.set(static_cast<float>(size), static_cast<float>(size), static_cast<float>(size));
         add(camera_);
 
-        Landscape lunarSurface(10, 180);
-        lunarSurface.addBox(1, 10);
-        lunarSurface.addBox(10, 1);
+        Landscape lunarSurface(0, 160);
+        lunarSurface.addBox(30, "x");
+        lunarSurface.addBox(50, "y");
+        lunarSurface.addBox(10, "x");
+        lunarSurface.addBox(-30, "y");
+        lunarSurface.addBox(10, "x");
+        lunarSurface.addBox(-20, "y");
+        lunarSurface.addBox(150, "x");
 
         for (const auto &box: lunarSurface.getBoxes()) {
             if (lunarSurface.getBoxMesh(box.name) != nullptr) {
                 add(lunarSurface.getBoxMesh(box.name));
             }
         }
-        add(lunarSurface.getBoxMesh("1"));
     }
 
     threepp::OrthographicCamera &camera() const {
