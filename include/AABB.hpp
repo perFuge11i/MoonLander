@@ -23,6 +23,11 @@ public:
         this->height = height;
     }
 
+    std::vector<float> getRightCorner() {
+        std::vector<float> cornerDimensions = {x + width, y};
+        return cornerDimensions;
+    }
+
     bool intersects(const AABB &other) const {
         double right = x + width / 2;
         double rightOther = other.x + other.width / 2;

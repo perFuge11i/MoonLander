@@ -46,18 +46,17 @@ public:
         material = threepp::MeshBasicMaterial::create();
         material->color.setHex(0xFF0000);
 
-        int x = boxes[boxes.size()-1].mesh->position.x + boxes[boxes.size()-1].mesh;
-        box.mesh->position.y = yPos;
+        std::vector<float> lastBoxPos = boxes[boxes.size()-1].collisionBox.getRightCorner();
 
         BoxObject box;
         box.mesh = threepp::Mesh::create(boxGeometry, material);
 
         box.mesh->rotation.z = 0;
-        box.mesh->position.x = xPos;
-        box.mesh->position.y = yPos;
+        box.mesh->position.x = lastBoxPos[0] + length/2.0;
+        box.mesh->position.y = lastBoxPos[1] - height/2.0;
 
-        box.collisionBox.setPosition(xPos - length / 2.0, yPos + length / 2.0);
-        box.collisionBox.setSize(length, length);
+        box.collisionBox.setPosition(lastBoxPos[0], lastBoxPos[1]);
+        box.collisionBox.setSize(length, height);
         box.name = std::to_string(boxes.size());
 
         boxes.push_back(box);
