@@ -6,6 +6,7 @@
 
 #include "threepp/threepp.hpp"
 #include "AABB.hpp"
+#include <cmath>
 
 class Landscape {
 private:
@@ -17,27 +18,78 @@ private:
 
     std::vector<BoxObject> boxes;
 public:
-    void addBox(const std::string &name, int xSize, int ySize, int xPos, int yPos) {
+    Landscape(const int x, const int y) {
         std::shared_ptr<threepp::BoxGeometry> boxGeometry;
         std::shared_ptr<threepp::MeshBasicMaterial> material;
 
-        boxGeometry = threepp::BoxGeometry::create(xSize, ySize, 0);
-        boxGeometry->translate(xPos, yPos, 0);
+        boxGeometry = threepp::BoxGeometry::create(1, 1, 0);
         material = threepp::MeshBasicMaterial::create();
         material->color.setHex(0xFF0000);
 
         BoxObject box;
         box.mesh = threepp::Mesh::create(boxGeometry, material);
-        box.collisionBox.setPosition(xPos - xSize / 2.0, yPos + ySize / 2.0);
-        box.collisionBox.setSize(xSize, ySize);
-        box.name = name;
+
+        box.mesh->position.x = x;
+        box.mesh->position.y = y;
+
+        box.collisionBox.setPosition(x - x / 2.0, y + y / 2.0);
+        box.collisionBox.setSize(1, 1);
+        box.name = std::to_string(boxes.size());
 
         boxes.push_back(box);
     }
+    void addBox(const int length, const int height) {
+        std::shared_ptr<threepp::BoxGeometry> boxGeometry;
+        std::shared_ptr<threepp::MeshBasicMaterial> material;
+
+        boxGeometry = threepp::BoxGeometry::create(length, height, 0);
+        material = threepp::MeshBasicMaterial::create();
+        material->color.setHex(0xFF0000);
+
+        int x = boxes[boxes.size()-1].mesh->position.x + boxes[boxes.size()-1].mesh;
+        box.mesh->position.y = yPos;
+
+        BoxObject box;
+        box.mesh = threepp::Mesh::create(boxGeometry, material);
+
+        box.mesh->rotation.z = 0;
+        box.mesh->position.x = xPos;
+        box.mesh->position.y = yPos;
+
+        box.collisionBox.setPosition(xPos - length / 2.0, yPos + length / 2.0);
+        box.collisionBox.setSize(length, length);
+        box.name = std::to_string(boxes.size());
+
+        boxes.push_back(box);
+    } /*
+    void addBox(int length, double angle) {
+        std::shared_ptr<threepp::BoxGeometry> boxGeometry;
+        std::shared_ptr<threepp::MeshBasicMaterial> material;
+
+        boxGeometry = threepp::BoxGeometry::create(xSize, ySize, 0);
+        material = threepp::MeshBasicMaterial::create();
+        material->color.setHex(0xFF0000);
+
+        BoxObject box;
+        box.mesh = threepp::Mesh::create(boxGeometry, material);
+
+        box.mesh->rotation.z = angle;
+        box.mesh->position.x = xPos;
+        box.mesh->position.y = yPos;
+
+        box.collisionBox.setPosition(xPos - xSize / 2.0, yPos + ySize / 2.0);
+        box.collisionBox.setSize(xSize, ySize);
+        box.name = std::to_string(boxes.size());
+
+        boxes.push_back(box);
+    } */
+    // Trenger å bestemme posisjonen til slutten av forrige for å sette pos
+    // Må finne ut hvordan man skal definere den første
+    // Må fikse collisions
 
 
     bool checkCollision(const AABB &otherBox) const {
-        for (const auto &box: boxes) {
+        for (const auto box: boxes) {
             if (box.collisionBox.intersects(otherBox)) {
                 return true;
             }
@@ -46,7 +98,7 @@ public:
     }
 
     std::shared_ptr<threepp::Mesh> getBoxMesh(const std::string &name) const {
-        for (const auto &box: boxes) {
+        for (const auto box: boxes) {
             if (box.name == name) {
                 return box.mesh;
             }

@@ -24,7 +24,7 @@ public:
         lunarSurface.addBox("box2", 10, 10, 200, 200);
         lunarSurface.addBox("otherBox", 10, 200, 100, 100);
 
-        AABB otherBox(10, 200, 100, 100);
+        AABB otherBox(10, 100, 100, 100);
         if (lunarSurface.checkCollision(otherBox)) {
             std::cout << "Collision";
         } else {

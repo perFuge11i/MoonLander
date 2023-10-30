@@ -11,6 +11,7 @@ private:
         AABB collisionBox;
         std::string name;
     };
+
 public:
     Spaceship() {
         std::shared_ptr<threepp::BoxGeometry> boxGeometry;
