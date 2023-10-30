@@ -10,7 +10,7 @@ int main() {
     canvas.animate([&]() {
         renderer.render(scene, scene.camera());
     });
-    std::cout<<"hello";
+
 }
 
 /*
