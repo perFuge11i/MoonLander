@@ -1,12 +1,14 @@
 #ifndef MOONLANDER_AABB_HPP
 #define MOONLANDER_AABB_HPP
 
+#include <iostream>
+
 // Hele fra chatGPT utenom intersect
 class AABB {
 private:
     float x, y, width, height;
 public:
-    AABB(int x_ = 0, int y_ = 0, int width_ = 0, int height_ = 0) {
+    AABB(float x_ = 0, float y_ = 0, float width_ = 0, float height_ = 0) {
         this->x = x_;
         this->y = y_;
         this->width = width_;
@@ -25,6 +27,7 @@ public:
 
     std::vector<float> getRightCorner() {
         std::vector<float> cornerDimensions = {x + width, y};
+        std::cout << cornerDimensions[0] << " - " << cornerDimensions[1] << std::endl;
         return cornerDimensions;
     }
 

@@ -11,7 +11,6 @@ class MoonScene : public threepp::Scene {
 private:
     std::shared_ptr<threepp::OrthographicCamera> camera_;
     std::vector<std::shared_ptr<threepp::Mesh>> box_;
-    Landscape lunarSurface(10, 180);
 public:
     MoonScene() {
         int size = 100;
@@ -20,22 +19,16 @@ public:
         camera_->position.set(static_cast<float>(size), static_cast<float>(size), static_cast<float>(size));
         add(camera_);
 
-        /*lunarSurface.addBox("box1", 100, 1, 100, 175);
-        lunarSurface.addBox("box2", 10, 10, 200, 200);
-        lunarSurface.addBox("otherBox", 10, 200, 100, 100);
-
-        AABB otherBox(10, 100, 100, 100);
-        if (lunarSurface.checkCollision(otherBox)) {
-            std::cout << "Collision";
-        } else {
-            std::cout << "No Collision";
-        }
+        Landscape lunarSurface(10, 180);
+        lunarSurface.addBox(1, 10);
+        lunarSurface.addBox(10, 1);
 
         for (const auto &box: lunarSurface.getBoxes()) {
             if (lunarSurface.getBoxMesh(box.name) != nullptr) {
                 add(lunarSurface.getBoxMesh(box.name));
             }
-        }*/
+        }
+        add(lunarSurface.getBoxMesh("1"));
     }
 
     threepp::OrthographicCamera &camera() const {

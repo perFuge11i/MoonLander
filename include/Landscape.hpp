@@ -7,6 +7,7 @@
 #include "threepp/threepp.hpp"
 #include "AABB.hpp"
 #include <cmath>
+#include <iostream>
 
 class Landscape {
 private:
@@ -32,13 +33,13 @@ public:
         box.mesh->position.x = x;
         box.mesh->position.y = y;
 
-        box.collisionBox.setPosition(x - x / 2.0, y + y / 2.0);
+        box.collisionBox.setPosition(x - 1/2.0, y + 1/2.0);
         box.collisionBox.setSize(1, 1);
         box.name = std::to_string(boxes.size());
 
         boxes.push_back(box);
     }
-    void addBox(const int length, const int height) {
+    void addBox(int length, int height) {
         std::shared_ptr<threepp::BoxGeometry> boxGeometry;
         std::shared_ptr<threepp::MeshBasicMaterial> material;
 
@@ -51,40 +52,16 @@ public:
         BoxObject box;
         box.mesh = threepp::Mesh::create(boxGeometry, material);
 
-        box.mesh->rotation.z = 0;
         box.mesh->position.x = lastBoxPos[0] + length/2.0;
         box.mesh->position.y = lastBoxPos[1] - height/2.0;
+        std::cout << "" << std::endl;
 
         box.collisionBox.setPosition(lastBoxPos[0], lastBoxPos[1]);
         box.collisionBox.setSize(length, height);
         box.name = std::to_string(boxes.size());
 
         boxes.push_back(box);
-    } /*
-    void addBox(int length, double angle) {
-        std::shared_ptr<threepp::BoxGeometry> boxGeometry;
-        std::shared_ptr<threepp::MeshBasicMaterial> material;
-
-        boxGeometry = threepp::BoxGeometry::create(xSize, ySize, 0);
-        material = threepp::MeshBasicMaterial::create();
-        material->color.setHex(0xFF0000);
-
-        BoxObject box;
-        box.mesh = threepp::Mesh::create(boxGeometry, material);
-
-        box.mesh->rotation.z = angle;
-        box.mesh->position.x = xPos;
-        box.mesh->position.y = yPos;
-
-        box.collisionBox.setPosition(xPos - xSize / 2.0, yPos + ySize / 2.0);
-        box.collisionBox.setSize(xSize, ySize);
-        box.name = std::to_string(boxes.size());
-
-        boxes.push_back(box);
-    } */
-    // Trenger å bestemme posisjonen til slutten av forrige for å sette pos
-    // Må finne ut hvordan man skal definere den første
-    // Må fikse collisions
+    }
 
 
     bool checkCollision(const AABB &otherBox) const {
