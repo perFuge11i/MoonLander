@@ -14,14 +14,20 @@ private:
     std::shared_ptr<threepp::Mesh> rocket_;
 public:
     MoonScene() {
-        int size = 200;
+        int size = 100;
 
         camera_ = threepp::OrthographicCamera::create(-size, size, -size, size);
         camera_->position.set(static_cast<float>(size), static_cast<float>(size), static_cast<float>(size));
         add(camera_);
 
-        Landscape lunarSurface(100, 200);
-        lunarSurface.addBox(200, 2);
+        Landscape lunarSurface(0, 160);
+        lunarSurface.addBox(30, "x");
+        lunarSurface.addBox(50, "y");
+        lunarSurface.addBox(10, "x");
+        lunarSurface.addBox(-30, "y");
+        lunarSurface.addBox(10, "x");
+        lunarSurface.addBox(-20, "y");
+        lunarSurface.addBox(150, "x");
 
         for (const auto &box: lunarSurface.getBoxes()) {
             if (lunarSurface.getBoxMesh(box.name) != nullptr) {
