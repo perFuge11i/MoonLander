@@ -36,10 +36,8 @@ public:
         return ship;
     }
 
-    void move() {
-        float x = ship.mesh->position.x;
-        ship.collisionBox.setPosition(x - size/ 2, y + size/ 2);
-
+    void move(std::vector<double> movement) {
+    }
 };
 
 #endif //MOONLANDER_SPACESHIP_HPP

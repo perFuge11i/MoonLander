@@ -8,12 +8,10 @@
 int main() {
     threepp::Canvas canvas("MoonLander");
     threepp::GLRenderer renderer(canvas.size());
-    MoonScene scene;
     LunarLanderGame game;
 
     threepp::Clock clock;
     canvas.animate([&]() {
-        renderer.render(scene, scene.camera());
         float dt = clock.getDelta();
 
         game.update(dt);

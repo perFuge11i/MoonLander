@@ -24,11 +24,13 @@ public:
         for (const auto line: lunarSurface.getLines()) {
             scene.addObject(line.mesh);
         }
+
+        scene.addObject(lunarLander.getShip().mesh);
     }
 
     void update(const double dt) {
-        std::vector<double> movement = rocketPhsyics.getVector(dt);
-        ship.move(movement);
+        std::vector<double> movement {0,1,0};//= rocketPhsyics.getVector(dt);
+        lunarLander.move(movement);
     }
 
     MoonScene& getScene() {
