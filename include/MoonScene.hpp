@@ -1,6 +1,8 @@
 #ifndef MOONLANDER_MOONSCENE_HPP
 #define MOONLANDER_MOONSCENE_HPP
 
+// kamera konfigurasjon og "camera()" funksjon hentet fra "snake" eksempel i "threepp"
+
 #include "Landscape.hpp"
 #include "threepp/threepp.hpp"
 #include <iostream>

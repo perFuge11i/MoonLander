@@ -1,10 +1,10 @@
 #ifndef MOONLANDER_AABB_HPP
 #define MOONLANDER_AABB_HPP
 
-#include <iostream>
-
-// Hele fra chatGPT utenom intersect
+// Hele fra chatGPT(modifisert) utenom intersect
 // AABB og intersect konsept fra video https://www.youtube.com/watch?v=oOEnWQZIePs
+
+#include <iostream>
 
 class AABB {
 private:
@@ -28,15 +28,19 @@ public:
     }
 
     bool intersects(const AABB &other) const {
-        double right = x + width / 2;
-        double rightOther = other.x + other.width / 2;
-        double height = y + height / 2;
-        double heightOther = other.y - other.height / 2;
+        float right = x + width / 2;
+        float rightOther = other.x + other.width / 2;
+        float left = x - width / 2;
+        float leftOther = other.x - other.width / 2;
+        float bottom = y + height / 2;
+        float bottomOther = other.y + other.height / 2;
+        float top = y - height / 2;
+        float topOther = other.y - other.height / 2;
 
-        return (x < rightOther &&
-                other.x < right &&
-                y > heightOther &&
-                other.y > height);
+        return (left < rightOther &&
+                leftOther < right &&
+                top < bottomOther &&
+                topOther < bottom);
     }
 };
 

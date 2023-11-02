@@ -3,15 +3,8 @@
 
 #include "threepp/threepp.hpp"
 #include "AABB.hpp"
-// Define the movement directions
 
-enum class RocketDirection {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
-    NONE  // No movement
-};
+//samme som i "Landscape.hpp", struct fra chatGPT
 
 class Spaceship {
 private:
@@ -26,18 +19,17 @@ public:
         std::shared_ptr<threepp::BoxGeometry> boxGeometry;
         std::shared_ptr<threepp::MeshBasicMaterial> material;
 
-        int size = 50;
+        int size = 20;
         int x = 30;
         int y = 30;
 
         boxGeometry = threepp::BoxGeometry::create(size, size, 0);
-        boxGeometry->translate(x, y, 0);
         material = threepp::MeshBasicMaterial::create();
-
-
         ship.mesh = threepp::Mesh::create(boxGeometry, material);
 
-        ship.collisionBox.setPosition(x - size/ 2, y + size/ 2);
+        ship.mesh->position.x = x;
+        ship.mesh->position.y = y;
+        ship.collisionBox.setPosition(x, y);
         ship.collisionBox.setSize(size, size);
     }
 
@@ -45,25 +37,10 @@ public:
         return ship;
     }
 
-    void move(std::vector<double> movement) {
-        // Update the rocket's position based on the direction
-        /*switch (rocketDirection_) {
-            case RocketDirection::UP:
-                rocket_->position.y += moveAmount;
-                break;
-            case RocketDirection::DOWN:
-                rocket_->position.y -= moveAmount;
-                break;
-            case RocketDirection::LEFT:
-                rocket_->position.x -= moveAmount;
-                break;
-            case RocketDirection::RIGHT:
-                rocket_->position.x += moveAmount;
-                break;
-            case RocketDirection::NONE:
-                // No movement
-                break;
-        }*/
+    void move(std::vector<float> movement) {
+        ship.mesh->position.x += movement[0];
+        ship.mesh->position.y += movement[1];
+        ship.collisionBox.setPosition(ship.mesh->position.x, ship.mesh->position.y);
     }
 };
 
