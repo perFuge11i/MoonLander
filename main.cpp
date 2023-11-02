@@ -17,6 +17,7 @@ int main() {
         game.update(dt);
         renderer.render(game.getScene(), game.getCamera());
     });
+
 }
 
 /*

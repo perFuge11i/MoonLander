@@ -4,10 +4,21 @@
 #include "Landscape.hpp"
 #include <iostream>
 
+// Define the movement directions
+enum class RocketDirection {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    NONE  // No movement
+};
 
 class MoonScene : public threepp::Scene {
 private:
     std::shared_ptr<threepp::OrthographicCamera> camera_;
+    std::vector<std::shared_ptr<threepp::Mesh>> box_;
+    std::shared_ptr<threepp::Mesh> rocket_; // Rocket mesh
+    RocketDirection rocketDirection_ = RocketDirection::NONE;
 public:
     MoonScene() {
         int size = 100;
@@ -19,6 +30,9 @@ public:
 
     void addObject(std::shared_ptr<threepp::Mesh> object) {
         add(object);
+    }
+
+
     }
 
     threepp::OrthographicCamera &camera() const {

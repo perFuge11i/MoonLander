@@ -37,6 +37,24 @@ public:
     }
 
     void move(std::vector<double> movement) {
+        // Update the rocket's position based on the direction
+        switch (rocketDirection_) {
+            case RocketDirection::UP:
+                rocket_->position.y += moveAmount;
+                break;
+            case RocketDirection::DOWN:
+                rocket_->position.y -= moveAmount;
+                break;
+            case RocketDirection::LEFT:
+                rocket_->position.x -= moveAmount;
+                break;
+            case RocketDirection::RIGHT:
+                rocket_->position.x += moveAmount;
+                break;
+            case RocketDirection::NONE:
+                // No movement
+                break;
+        }
     }
 };
 
