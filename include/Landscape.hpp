@@ -90,15 +90,6 @@ public:
         lines.push_back(line);
     }
 
-    bool checkCollision(const AABB otherBox) const {
-        for (const auto line: lines) {
-            if (line.collisionBox.intersects(otherBox)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     std::vector<lineObject> getLines() {
         return lines;
     }
