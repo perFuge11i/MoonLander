@@ -11,10 +11,9 @@
 
 class Landscape {
 private:
-    struct BoxObject {
+    struct lineObject {
         std::shared_ptr<threepp::Mesh> mesh;
         AABB collisionBox;
-        std::string name;
         std::string xOrY;
         int sign;
 
@@ -22,105 +21,86 @@ private:
             std::vector<float> endDimensions;
 
             if (this->xOrY == "x") {
-                endDimensions = {this->mesh->position.x + this->sign*this->mesh->scale.x/2,
+                endDimensions = {this->mesh->position.x + this->sign * this->mesh->scale.x / 2,
                                  this->mesh->position.y};
             } else if (this->xOrY == "y") {
                 endDimensions = {this->mesh->position.x,
-                                 this->mesh->position.y + this->sign*this->mesh->scale.y/2};
+                                 this->mesh->position.y + this->sign * this->mesh->scale.y / 2};
             }
-
-            std::cout << "lastEnd" << std::endl;
-            std::cout << this->mesh->position.x  << " - " << this->mesh->position.y << std::endl;
-            std::cout << this->mesh->scale.x  << " - " << this->mesh->scale.y << std::endl;
-            std::cout << this->sign << std::endl;
 
             return endDimensions;
         }
     };
 
-    std::vector<BoxObject> boxes;
+    std::vector<lineObject> lines;
 public:
     Landscape(const int x, const int y) {
-        std::shared_ptr<threepp::BoxGeometry> boxGeometry;
+        std::shared_ptr<threepp::BoxGeometry> geometry;
         std::shared_ptr<threepp::MeshBasicMaterial> material;
 
-        boxGeometry = threepp::BoxGeometry::create();
+        geometry = threepp::BoxGeometry::create();
         material = threepp::MeshBasicMaterial::create();
-        material->color.setHex(0xFF0000);
 
-        BoxObject box;
-        box.mesh = threepp::Mesh::create(boxGeometry, material);
+        lineObject line;
+        line.mesh = threepp::Mesh::create(geometry, material);
 
-        box.mesh->scale.set(0, 0, 0);
-        box.mesh->position.x = x;
-        box.mesh->position.y = y;
+        line.mesh->scale.set(0, 0, 0);
+        line.mesh->position.x = x;
+        line.mesh->position.y = y;
 
-        box.collisionBox.setPosition(x - 1/2.0, y + 1/2.0);
-        box.collisionBox.setSize(0, 0);
-        box.name = std::to_string(boxes.size());
-        box.xOrY = "x";
-        box.sign = 1;
-        std::cout << box.mesh->position.x << " - " << box.mesh->position.y << std::endl;
-        std::cout << box.mesh->scale.x << " - " << box.mesh->scale.y << std::endl;
+        line.collisionBox.setPosition(x - 1 / 2.0, y + 1 / 2.0);
+        line.collisionBox.setSize(0, 0);
+        line.xOrY = "x";
+        line.sign = 1;
 
-        boxes.push_back(box);
+        lines.push_back(line);
     }
-    void addBox(int length, std::string xOrY) {
-        std::shared_ptr<threepp::BoxGeometry> boxGeometry;
+
+    void addLine(int length, std::string xOrY_) {
+        std::shared_ptr<threepp::BoxGeometry> geometry;
         std::shared_ptr<threepp::MeshBasicMaterial> material;
 
-        boxGeometry = threepp::BoxGeometry::create();
+        geometry = threepp::BoxGeometry::create();
         material = threepp::MeshBasicMaterial::create();
         material->color.setHex(0xFF0000);
 
-        std::vector<float> lastBoxPos = boxes.back().getEnd();
-        BoxObject box;
-        box.mesh = threepp::Mesh::create(boxGeometry, material);
+        std::vector<float> lastLinePos = lines.back().getEnd();
 
-        if (xOrY == "x") {
-            box.mesh->scale.set(abs(length), 1, 0);
-            box.mesh->position.x = lastBoxPos[0] + length/2.0;
-            box.mesh->position.y = lastBoxPos[1];
-            box.collisionBox.setSize(abs(length), 1);
-            box.sign = length/abs(length);
-        } else if (xOrY == "y"){
-            box.mesh->scale.set(1, abs(length), 0);
-            box.mesh->position.x = lastBoxPos[0];
-            box.mesh->position.y = lastBoxPos[1] - length/2.0;
-            box.collisionBox.setSize(1, abs(length));
-            box.sign = -length/abs(length);
+        lineObject line;
+        line.mesh = threepp::Mesh::create(geometry, material);
+
+        if (xOrY_ == "x") {
+            line.mesh->scale.set(abs(length), 1, 0);
+            line.mesh->position.x = lastLinePos[0] + length / 2;
+            line.mesh->position.y = lastLinePos[1];
+            line.collisionBox.setSize(abs(length), 1);
+            line.collisionBox.setPosition(lastLinePos[0], lastLinePos[1]);
+            line.sign = length / abs(length);
+        } else if (xOrY_ == "y") {
+            line.mesh->scale.set(1, abs(length), 0);
+            line.mesh->position.x = lastLinePos[0];
+            line.mesh->position.y = lastLinePos[1] - length / 2;
+            line.collisionBox.setSize(1, abs(length));
+            line.sign = -length / abs(length);
         }
 
-        box.xOrY = xOrY;
-        box.collisionBox.setPosition(lastBoxPos[0], lastBoxPos[1]);
-        box.name = std::to_string(boxes.size());
-        std::cout << "current" << std::endl;
-        std::cout << box.mesh->position.x << " - " << box.mesh->position.y << std::endl;
-        std::cout << box.mesh->scale.x << " - " << box.mesh->scale.y << std::endl;
-        boxes.push_back(box);
+        line.xOrY = xOrY_;
+        line.collisionBox.setPosition(lastLinePos[0] - 1/2, lastLinePos[1] + 1/2);
+
+        lines.push_back(line);
     }
 
-
-    bool checkCollision(const AABB &otherBox) const {
-        for (const auto box: boxes) {
-            if (box.collisionBox.intersects(otherBox)) {
+    bool checkCollision(const AABB otherBox) const {
+        for (const auto line: lines) {
+            if (line.collisionBox.intersects(otherBox)) {
                 return true;
             }
         }
         return false;
     }
 
-    std::shared_ptr<threepp::Mesh> getBoxMesh(const std::string &name) const {
-        for (const auto box: boxes) {
-            if (box.name == name) {
-                return box.mesh;
-            }
-        }
-        return nullptr;
-    }
-
-    std::vector<BoxObject> getBoxes() {
-        return boxes;
+    std::vector<lineObject> getLines() {
+        return lines;
     }
 };
 

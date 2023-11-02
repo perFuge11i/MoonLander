@@ -4,6 +4,8 @@
 #include <iostream>
 
 // Hele fra chatGPT utenom intersect
+// AABB og intersect konsept fra video https://www.youtube.com/watch?v=oOEnWQZIePs
+
 class AABB {
 private:
     float x, y, width, height;

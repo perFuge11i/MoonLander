@@ -1,14 +1,23 @@
 //FOR MOON LANDER
+
+//Utgangspunkt i snake eksempel fra threepp
 #include "Spaceship.hpp"
 #include "MoonScene.hpp"
+#include "LunarLanderGame.hpp"
 
 int main() {
     threepp::Canvas canvas("MoonLander");
     threepp::GLRenderer renderer(canvas.size());
-    auto scene = MoonScene();
+    MoonScene scene;
+    LunarLanderGame game;
 
+    threepp::Clock clock;
     canvas.animate([&]() {
         renderer.render(scene, scene.camera());
+        float dt = clock.getDelta();
+
+        game.update(dt);
+        renderer.render(game.getScene(), game.getCamera());
     });
 }
 
