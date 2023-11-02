@@ -3,6 +3,15 @@
 
 #include "threepp/threepp.hpp"
 #include "AABB.hpp"
+// Define the movement directions
+
+enum class RocketDirection {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    NONE  // No movement
+};
 
 class Spaceship {
 private:

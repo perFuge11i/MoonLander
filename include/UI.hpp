@@ -3,6 +3,14 @@
 
 class UI {
 private:
+    // Define the movement directions
+    enum class RocketDirection {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT,
+        NONE  // No movement
+    };
 public:
     void handleKeyPress(int key) {
         const float moveAmount = 1.0f;
