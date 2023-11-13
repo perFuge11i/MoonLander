@@ -1,8 +1,8 @@
 #ifndef MOONLANDER_LANDSCAPE_HPP
 #define MOONLANDER_LANDSCAPE_HPP
 
-//Struct forsklag fra chatGPT
-//check collisions fra chatGPT
+//Forslag om å bruke struct fra chatGPT, "xOrY", "sign" og "getEnd()" funksjon lagt til selv
+
 
 #include "threepp/threepp.hpp"
 #include "AABB.hpp"
@@ -48,7 +48,7 @@ public:
         line.mesh->position.x = x;
         line.mesh->position.y = y;
 
-        line.collisionBox.setPosition(x - 1 / 2.0, y + 1 / 2.0);
+        line.collisionBox.setPosition(x, y);
         line.collisionBox.setSize(0, 0);
         line.xOrY = "x";
         line.sign = 1;
@@ -85,7 +85,6 @@ public:
         }
 
         line.xOrY = xOrY_;
-        line.collisionBox.setPosition(lastLinePos[0] - 1/2, lastLinePos[1] + 1/2);
 
         lines.push_back(line);
     }
@@ -94,6 +93,5 @@ public:
         return lines;
     }
 };
-
 
 #endif //MOONLANDER_LANDSCAPE_HPP
