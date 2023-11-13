@@ -11,6 +11,7 @@ private:
     struct boxObject {
         std::shared_ptr<threepp::Mesh> mesh;
         AABB collisionBox;
+        float rotation = 0;
     };
 
     boxObject ship;
@@ -41,6 +42,13 @@ public:
         ship.mesh->position.x += movement[0];
         ship.mesh->position.y += movement[1];
         ship.collisionBox.setPosition(ship.mesh->position.x, ship.mesh->position.y);
+    }
+    void rotate(int direction, float time) {
+        ship.mesh->rotation.z += direction*time;
+        ship.rotation = direction*time;
+    }
+    auto getRotation() {
+        return ship.rotation;
     }
 };
 

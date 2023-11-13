@@ -6,12 +6,16 @@
 #include "MoonScene.hpp"
 #include "Spaceship.hpp"
 #include "Landscape.hpp"
+#include "UI.hpp"
+#include "PhysicsEngine.hpp"
 
 class LunarLanderGame {
 private:
     MoonScene scene;
     Spaceship lunarLander;
     Landscape lunarSurface;
+    UI UI;
+    PhysicsEngine rocektPhysics;
 public:
     LunarLanderGame() : lunarSurface(0, 160) {
         //test surface
@@ -31,8 +35,22 @@ public:
 
     //test  funksjon for kollisjon og animasjon
     void update(const float dt) {
-        bool collision = false;
+        auto movement = {0,0}
 
+        UI.update();
+        if (UI.searchCommands("LEFT")) {
+            lunarLander.rotate(-1, dt);
+        }
+        if (UI.searchCommands("RIGHT")) {
+            lunarLander.rotate(1, dt);
+        }
+        if (UI.searchCommands("FORWARD")) {
+            rocektPhysics.calculateForce(lunarLander.getRotation());
+            movement = rocektPhysics.calculateNextMovement(dt)
+        }
+
+
+        bool collision = false;
         for (const auto line: lunarSurface.getLines()) {
             if (lunarLander.getShip().collisionBox.intersects(line.collisionBox)) {
                 collision = true;
@@ -40,7 +58,6 @@ public:
         }
 
         if (!collision) {
-            std::vector<float> movement{0.05, 0.1};
             lunarLander.move(movement);
         }
     }
