@@ -15,18 +15,14 @@ private:
         std::shared_ptr<threepp::Mesh> mesh;
         AABB collisionBox;
         std::string xOrY;
-        int sign;
+        float angle;
+        int length;
 
         std::vector<float> getEnd() {
             std::vector<float> endDimensions;
 
-            if (this->xOrY == "x") {
-                endDimensions = {this->mesh->position.x + this->sign * this->mesh->scale.x / 2,
-                                 this->mesh->position.y};
-            } else if (this->xOrY == "y") {
-                endDimensions = {this->mesh->position.x,
-                                 this->mesh->position.y + this->sign * this->mesh->scale.y / 2};
-            }
+            endDimensions = {this->mesh->position.x + cos(this->angle)*this->length/2,
+                             this->mesh->position.y - sin(this->angle)*this->length/2};
 
             return endDimensions;
         }
@@ -50,13 +46,11 @@ public:
 
         line.collisionBox.setPosition(x, y);
         line.collisionBox.setSize(0, 0);
-        line.xOrY = "x";
-        line.sign = 1;
 
         lines.push_back(line);
     }
 
-    void addLine(int length, std::string xOrY_) {
+    void addLine(int length, float angle) {
         std::shared_ptr<threepp::BoxGeometry> geometry;
         std::shared_ptr<threepp::MeshBasicMaterial> material;
 
@@ -64,27 +58,20 @@ public:
         material = threepp::MeshBasicMaterial::create();
         material->color.setHex(0xFF0000);
 
-        std::vector<float> lastLinePos = lines.back().getEnd();
+        std::vector<float> lastLineEnd = lines.back().getEnd();
 
         lineObject line;
         line.mesh = threepp::Mesh::create(geometry, material);
 
-        if (xOrY_ == "x") {
-            line.mesh->scale.set(abs(length), 1, 0);
-            line.mesh->position.x = lastLinePos[0] + length / 2;
-            line.mesh->position.y = lastLinePos[1];
-            line.collisionBox.setSize(abs(length), 1);
-            line.collisionBox.setPosition(lastLinePos[0], lastLinePos[1]);
-            line.sign = length / abs(length);
-        } else if (xOrY_ == "y") {
-            line.mesh->scale.set(1, abs(length), 0);
-            line.mesh->position.x = lastLinePos[0];
-            line.mesh->position.y = lastLinePos[1] - length / 2;
-            line.collisionBox.setSize(1, abs(length));
-            line.sign = -length / abs(length);
-        }
+        line.mesh->scale.set(length, 0.5, 0);
+        line.mesh->position.x = lastLineEnd[0] + cos(angle)*length / 2;
+        line.mesh->position.y = lastLineEnd[1] - sin(angle)*length / 2;
+        line.mesh->rotation.z = -angle;
+        line.length = length;
+        line.angle = angle;
 
-        line.xOrY = xOrY_;
+        line.collisionBox.setSize(cos(angle)*length, sin(angle)*length);
+        line.collisionBox.setPosition(lastLineEnd[0] + cos(angle)*length / 2, lastLineEnd[1] - sin(angle)*length / 2);
 
         lines.push_back(line);
     }

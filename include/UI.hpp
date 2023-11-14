@@ -28,6 +28,9 @@ public:
             case threepp::Key::D:
                 commands.push_back("RIGHT");
                 break;
+            case threepp::Key::R:
+                commands.push_back("RESET");
+                break;
         }
     }
     void onKeyReleased(threepp::KeyEvent keyPress) override{

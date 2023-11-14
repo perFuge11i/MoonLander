@@ -8,10 +8,15 @@ class PhysicsEngine {
 private:
     std::vector<float> distanceToTravel = {0,0};
     std::vector<float> speed = {0,0};
+    std::vector<float> initSpeed = {0,0};
     std::vector<float> force = {0,0};
     const std::vector<float> g = {0,9.81};
-    float rocketSpeedConstant = 0.5;
+    const float rocketSpeedConstant = 0.2;
 public:
+    PhysicsEngine(float initSpeedX, float initSpeedY) {
+        this->initSpeed = {initSpeedX, initSpeedY};
+        speed = initSpeed;
+    }
     void calculateForce(float rotation) {
         force = {rocketSpeedConstant*sin(rotation), -rocketSpeedConstant*cos(rotation)};
     }
@@ -20,6 +25,10 @@ public:
         distanceToTravel = {speed[0]*time, speed[1]*time};
         force = {0,0};
         return distanceToTravel;
+    }
+
+    void reset() {
+        speed = initSpeed;
     }
 };
 

@@ -2,7 +2,6 @@
 //Utgangspunkt i "snake" eksempel fra "threepp"
 
 #include "LunarLanderGame.hpp"
-#include "UI.hpp"
 
 int main() {
     LunarLanderGame game;

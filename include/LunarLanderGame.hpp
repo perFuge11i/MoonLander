@@ -10,6 +10,7 @@
 #include "PhysicsEngine.hpp"
 #include <iostream>
 #include <string>
+#include <cmath>
 
 class LunarLanderGame {
 private:
@@ -20,15 +21,85 @@ private:
     PhysicsEngine rocektPhysics;
 public:
 
-    LunarLanderGame() : lunarSurface(0, 160) {
-        //test surface
-        lunarSurface.addLine(30, "x");
-        lunarSurface.addLine(50, "y");
-        lunarSurface.addLine(10, "x");
-        lunarSurface.addLine(-30, "y");
-        lunarSurface.addLine(10, "x");
-        lunarSurface.addLine(-20, "y");
-        lunarSurface.addLine(150, "x");
+    LunarLanderGame() : lunarSurface(0, 160), rocektPhysics(10, 0) {
+        lunarSurface.addLine(5, 0);
+        lunarSurface.addLine(3, M_PI_2 - M_PI_4/4);
+        lunarSurface.addLine(5, M_PI_2 - M_PI_4/8);
+        lunarSurface.addLine(3, M_PI_2);
+        lunarSurface.addLine(2, 0);
+        lunarSurface.addLine(5, M_PI_2 - M_PI_4/4);
+        lunarSurface.addLine(4, M_PI_4);
+        lunarSurface.addLine(2, M_PI_2 - M_PI_4/4);
+        lunarSurface.addLine(2, M_PI_2 - M_PI_4/8);
+        lunarSurface.addLine(3, M_PI/3);
+        lunarSurface.addLine(2, 0);
+        lunarSurface.addLine(7, M_PI_2 - M_PI_4/4);
+        lunarSurface.addLine(2, M_PI/6);
+        lunarSurface.addLine(3, -M_PI_4);
+        lunarSurface.addLine(3, 0);
+        lunarSurface.addLine(2, M_PI_4);
+        lunarSurface.addLine(3, M_PI_2 - M_PI_4/8);
+        lunarSurface.addLine(5, M_PI_2 - M_PI_4/4);
+        lunarSurface.addLine(2, M_PI/6);
+        lunarSurface.addLine(2, M_PI_2 - M_PI_4/8);
+        lunarSurface.addLine(2, M_PI_4 + M_PI_4/4);
+        lunarSurface.addLine(2, M_PI_4);
+        lunarSurface.addLine(2, 0);
+        lunarSurface.addLine(2, -(M_PI_2 - M_PI_4/4));
+        lunarSurface.addLine(2, 0);
+        lunarSurface.addLine(2, -(M_PI_2 - M_PI_4/4));
+        lunarSurface.addLine(1, 0);
+        lunarSurface.addLine(5, -(M_PI_2 - M_PI_4/8));
+        lunarSurface.addLine(5, -(M_PI_2 - M_PI_4/4));
+        lunarSurface.addLine(2, -M_PI_2);
+        lunarSurface.addLine(3, -(M_PI_2 - M_PI_4/6));
+        lunarSurface.addLine(3, -(M_PI_2 - M_PI_4));
+        lunarSurface.addLine(3, -(M_PI_2 - M_PI_4/8));
+        lunarSurface.addLine(2, -(M_PI_2 - M_PI_4/3));
+        lunarSurface.addLine(2, -(M_PI_4 - M_PI_4/4));
+        lunarSurface.addLine(2, 0);
+        lunarSurface.addLine(2, M_PI_4);
+        lunarSurface.addLine(3, M_PI_2 - M_PI_4/2);
+        lunarSurface.addLine(2, M_PI_4 + M_PI/12);
+        lunarSurface.addLine(2, M_PI_4 + M_PI_4/8);
+        lunarSurface.addLine(1, M_PI_2 - M_PI_4/2);
+        lunarSurface.addLine(2, M_PI_4 + M_PI_4/8);
+        lunarSurface.addLine(1, M_PI_2 - M_PI_4/2);
+        lunarSurface.addLine(2, M_PI/6);
+        lunarSurface.addLine(3, M_PI_2 - M_PI_4/2);
+        lunarSurface.addLine(2, M_PI/6);
+        lunarSurface.addLine(2, M_PI_2 - M_PI_4);
+        lunarSurface.addLine(2, 0);
+        lunarSurface.addLine(2, -M_PI/12);
+        lunarSurface.addLine(2, -(M_PI_4 + M_PI_4/8));
+        lunarSurface.addLine(1, -(M_PI_2 - M_PI_4/8));
+        lunarSurface.addLine(2, -(M_PI_2 - M_PI_4/2));
+        lunarSurface.addLine(1, -(M_PI_2 - M_PI_4/8));
+        lunarSurface.addLine(2, -(M_PI_2 - M_PI_4/2));
+        lunarSurface.addLine(1, -(M_PI_2 - M_PI_4/8));
+        lunarSurface.addLine(2, -(M_PI_2 - M_PI_4/2));
+        lunarSurface.addLine(2, 0);
+        lunarSurface.addLine(3, M_PI_2 - M_PI_4/4);
+        lunarSurface.addLine(1, M_PI_4);
+        lunarSurface.addLine(1, -M_PI/6);
+        lunarSurface.addLine(2, -(M_PI_4 + M_PI_4/4));
+        lunarSurface.addLine(3, -(M_PI_2 - M_PI_4/6));
+        lunarSurface.addLine(3, -M_PI/6);
+        lunarSurface.addLine(5, -(M_PI_2 - M_PI_4/6));
+        lunarSurface.addLine(5, -(M_PI_2 - M_PI_4/4));
+        lunarSurface.addLine(1, -M_PI_2);
+        lunarSurface.addLine(2, -(M_PI_4 - M_PI_4/4));
+        lunarSurface.addLine(3, 0);
+        lunarSurface.addLine(5, M_PI_4);
+        lunarSurface.addLine(2, M_PI_4 + M_PI_4/3);
+        lunarSurface.addLine(2, M_PI_4);
+        lunarSurface.addLine(2, M_PI_4 + M_PI_4/3);
+        lunarSurface.addLine(2, M_PI_4 - M_PI_4/4);
+        lunarSurface.addLine(5, M_PI_2 - M_PI_4/6);
+        lunarSurface.addLine(2, M_PI_4 - M_PI_4/4);
+
+
+
 
         for (const auto line: lunarSurface.getLines()) {
             scene.addObject(line.mesh);
@@ -36,7 +107,6 @@ public:
         scene.addObject(lunarLander.getShip().mesh);
     }
 
-    //test  funksjon for kollisjon og animasjon
     void update(const float dt) {
         std::vector<float> movement = {2,0};
 
@@ -48,6 +118,10 @@ public:
         }
         if (keyInputs.searchCommands("FORWARD")) {
             rocektPhysics.calculateForce(lunarLander.getRotation());
+        }
+        if (keyInputs.searchCommands("RESET")) {
+            lunarLander.reset();
+            rocektPhysics.reset();
         }
 
         movement = rocektPhysics.calculateNextMovement(dt);
