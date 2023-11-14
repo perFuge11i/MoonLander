@@ -2,42 +2,45 @@
 #define MOONLANDER_UI_HPP
 
 #include "threepp/threepp.hpp"
+#include <string>
 
-//Based on threepp example "snake" and adapted for our use
+//Tilpasset fra "snake" eksempel
 
 class UI : public threepp::KeyListener {
 private:
-    std::vector<std::string> activeKeys;
-
+    std::vector<std::string> commands;
 public:
-    void onKeyPressed(threepp::KeyEvent keyPress) override {
-
+    void onKeyPressed(threepp::KeyEvent keyPress) override{
         switch (keyPress.key) {
             case threepp::Key::UP:
             case threepp::Key::W:
-                activeKeys.push_back("UP");
+                commands.push_back("FORWARD");
                 break;
             case threepp::Key::DOWN:
             case threepp::Key::S:
-                activeKeys.push_back("DOWN");
+                commands.push_back("SPEEDUP");
                 break;
             case threepp::Key::LEFT:
             case threepp::Key::A:
-                activeKeys.push_back("LEFT");
+                commands.push_back("LEFT");
                 break;
             case threepp::Key::RIGHT:
             case threepp::Key::D:
-                activeKeys.push_back("RIGHT");
+                commands.push_back("RIGHT");
                 break;
         }
     }
-    //Chat GPT
-    std::vector<std::string> keySearcher() const {
-        std::vector<std::string> foundKeys;
-        for (const auto &key: activeKeys) {
-            foundKeys.push_back(key);
+    void onKeyReleased(threepp::KeyEvent keyPress) override{
+        commands.clear();
+    }
+
+    bool searchCommands(std::string command) const {
+        for (const auto &element: commands) {
+            if (element == command) {
+                return true;
+            }
         }
-        return foundKeys;
+        return false;
     }
 };
 #endif//MOONLANDER_UI_HPP

@@ -45,7 +45,7 @@ public:
     }
     void rotate(int direction, float time) {
         ship.mesh->rotation.z += direction*time;
-        ship.rotation = direction*time;
+        ship.rotation += direction*time;
     }
     auto getRotation() {
         return ship.rotation;

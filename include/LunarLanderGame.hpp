@@ -8,15 +8,18 @@
 #include "Landscape.hpp"
 #include "UI.hpp"
 #include "PhysicsEngine.hpp"
+#include <iostream>
+#include <string>
 
 class LunarLanderGame {
 private:
     MoonScene scene;
     Spaceship lunarLander;
     Landscape lunarSurface;
-    UI UI;
+    UI keyInputs;
     PhysicsEngine rocektPhysics;
 public:
+
     LunarLanderGame() : lunarSurface(0, 160) {
         //test surface
         lunarSurface.addLine(30, "x");
@@ -35,19 +38,19 @@ public:
 
     //test  funksjon for kollisjon og animasjon
     void update(const float dt) {
-        auto movement = {0,0}
+        std::vector<float> movement = {2,0};
 
-        UI.update();
-        if (UI.searchCommands("LEFT")) {
+        if (keyInputs.searchCommands("LEFT")) {
             lunarLander.rotate(-1, dt);
         }
-        if (UI.searchCommands("RIGHT")) {
+        if (keyInputs.searchCommands("RIGHT")) {
             lunarLander.rotate(1, dt);
         }
-        if (UI.searchCommands("FORWARD")) {
+        if (keyInputs.searchCommands("FORWARD")) {
             rocektPhysics.calculateForce(lunarLander.getRotation());
-            movement = rocektPhysics.calculateNextMovement(dt)
         }
+
+        movement = rocektPhysics.calculateNextMovement(dt);
 
 
         bool collision = false;
@@ -68,6 +71,10 @@ public:
 
     threepp::OrthographicCamera &getCamera() {
         return scene.camera();
+    }
+
+    UI &getUI() {
+        return keyInputs;
     }
 };
 
