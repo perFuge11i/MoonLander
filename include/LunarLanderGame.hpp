@@ -1,7 +1,7 @@
 #ifndef MOONLANDER_LUNARLANDERGAME_HPP
 #define MOONLANDER_LUNARLANDERGAME_HPP
 
-//linje 14: innspill fra chatGPT
+//linje 26: innspill fra chatGPT
 
 #include "MoonScene.hpp"
 #include "Spaceship.hpp"
@@ -11,6 +11,8 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include "threepp/threepp.hpp"
+
 
 class LunarLanderGame {
 private:
@@ -18,10 +20,10 @@ private:
     Spaceship lunarLander;
     Landscape lunarSurface;
     UI keyInputs;
-    PhysicsEngine rocektPhysics;
+    PhysicsEngine rocketPhysics;
 public:
 
-    LunarLanderGame() : lunarSurface(0, 160), rocektPhysics(10, 0) {
+    LunarLanderGame() : lunarSurface(0, 160), rocketPhysics(10, 0), lunarLander(30, 30), scene(200) {
         lunarSurface.addLine(5, 0);
         lunarSurface.addLine(3, M_PI_2 - M_PI_4/4);
         lunarSurface.addLine(5, M_PI_2 - M_PI_4/8);
@@ -98,9 +100,6 @@ public:
         lunarSurface.addLine(5, M_PI_2 - M_PI_4/6);
         lunarSurface.addLine(2, M_PI_4 - M_PI_4/4);
 
-
-
-
         for (const auto line: lunarSurface.getLines()) {
             scene.addObject(line.mesh);
         }
@@ -108,35 +107,42 @@ public:
     }
 
     void update(const float dt) {
-        std::vector<float> movement = {2,0};
+        std::vector<float> movement;
 
-        if (keyInputs.searchCommands("LEFT")) {
-            lunarLander.rotate(-1, dt);
-        }
-        if (keyInputs.searchCommands("RIGHT")) {
-            lunarLander.rotate(1, dt);
-        }
-        if (keyInputs.searchCommands("FORWARD")) {
-            rocektPhysics.calculateForce(lunarLander.getRotation());
-        }
-        if (keyInputs.searchCommands("RESET")) {
-            lunarLander.reset();
-            rocektPhysics.reset();
-        }
-
-        movement = rocektPhysics.calculateNextMovement(dt);
-
-
-        bool collision = false;
+        bool isClose = false;
         for (const auto line: lunarSurface.getLines()) {
             if (lunarLander.getShip().collisionBox.intersects(line.collisionBox)) {
-                collision = true;
+                isClose = true;
             }
         }
+        if (isClose) {
+            scene.zoomIn();
+        } else {
+            scene.zoomOut();
+        }
 
+        if (keyInputs.searchCommands("RESET")) {
+            lunarLander.reset();
+            rocketPhysics.reset();
+        }
+
+        bool collision = false;
         if (!collision) {
+            if (keyInputs.searchCommands("LEFT")) {
+                lunarLander.rotate(-1, dt);
+            }
+            if (keyInputs.searchCommands("RIGHT")) {
+                lunarLander.rotate(1, dt);
+            }
+            if (keyInputs.searchCommands("FORWARD")) {
+                rocketPhysics.calculateForce(lunarLander.getRotation());
+            }
+
+            movement = rocketPhysics.calculateNextMovement(dt);
             lunarLander.move(movement);
         }
+
+        scene.setCameraPosition(lunarLander.getPosition());
     }
 
     MoonScene &getScene() {

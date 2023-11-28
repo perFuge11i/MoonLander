@@ -10,7 +10,7 @@ private:
     std::vector<float> speed = {0,0};
     std::vector<float> initSpeed = {0,0};
     std::vector<float> force = {0,0};
-    const std::vector<float> g = {0,9.81};
+    const std::vector<float> g = {0,4};
     const float rocketSpeedConstant = 0.2;
 public:
     PhysicsEngine(float initSpeedX, float initSpeedY) {

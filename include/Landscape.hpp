@@ -14,7 +14,6 @@ private:
     struct lineObject {
         std::shared_ptr<threepp::Mesh> mesh;
         AABB collisionBox;
-        std::string xOrY;
         float angle;
         int length;
 
@@ -66,7 +65,7 @@ public:
         line.mesh->scale.set(length, 0.5, 0);
         line.mesh->position.x = lastLineEnd[0] + cos(angle)*length / 2;
         line.mesh->position.y = lastLineEnd[1] - sin(angle)*length / 2;
-        line.mesh->rotation.z = -angle;
+        line.mesh->rotation.z -= angle;
         line.length = length;
         line.angle = angle;
 

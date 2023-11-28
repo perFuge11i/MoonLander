@@ -12,28 +12,30 @@ private:
     struct shipObject {
         std::shared_ptr<threepp::Mesh> mesh;
         AABB collisionBox;
-        float rotation = 0;
+        std::vector<float> initPosition;
+        std::vector<float> position;
+        std::vector<float> scale;
+        float angle = 0;
     };
 
     shipObject ship;
-    const std::vector<int> initPosition = {30, 30};
 public:
-    Spaceship() {
+    Spaceship(int x, int y) {
         std::shared_ptr<threepp::BoxGeometry> boxGeometry;
         std::shared_ptr<threepp::MeshBasicMaterial> material;
 
-        int size = 2;
-        int x = 30;
-        int y = 30;
+        ship.initPosition = {static_cast<float>(x), static_cast<float>(y)};
+        ship.position = ship.initPosition;
+        ship.scale = {2,2};
 
-        boxGeometry = threepp::BoxGeometry::create(size, size, 0);
+        boxGeometry = threepp::BoxGeometry::create(ship.scale[0], ship.scale[1], 0);
         material = threepp::MeshBasicMaterial::create();
         ship.mesh = threepp::Mesh::create(boxGeometry, material);
 
-        ship.mesh->position.x = initPosition[0];
-        ship.mesh->position.y = initPosition[1];
+        ship.mesh->position.x = ship.position[0];
+        ship.mesh->position.y = ship.position[1];
         ship.collisionBox.setPosition(x, y);
-        ship.collisionBox.setSize(size, size);
+        ship.collisionBox.setSize(ship.scale[0] + 20, ship.scale[1] + 20);
     }
 
     shipObject getShip() {
@@ -41,24 +43,31 @@ public:
     }
 
     void move(std::vector<float> movement) {
-        ship.mesh->position.x += movement[0];
-        ship.mesh->position.y += movement[1];
-        ship.collisionBox.setPosition(ship.mesh->position.x, ship.mesh->position.y);
+        ship.position[0] += movement[0];
+        ship.position[1] += movement[1];
+        ship.mesh->position.x = ship.position[0];
+        ship.mesh->position.y = ship.position[1];
+        ship.collisionBox.setPosition(ship.position[0], ship.position[1]);
     }
     void rotate(int direction, float time) {
         ship.mesh->rotation.z += direction*time;
-        ship.rotation += direction*time;
+        ship.angle += direction*time;
     }
-    auto getRotation() {
-        return ship.rotation;
+    float getRotation() {
+        return ship.angle;
+    }
+
+    std::vector<float> getPosition() {
+        return ship.position;
     }
 
     void reset() {
-        ship.mesh->position.x = initPosition[0];
-        ship.mesh->position.y = initPosition[1];
+        ship.mesh->position.x = ship.initPosition[0];
+        ship.mesh->position.y = ship.initPosition[1];
+        ship.position = ship.initPosition;
         ship.mesh->rotation.z = 0;
-        ship.rotation = 0;
-        ship.collisionBox.setPosition(initPosition[0], initPosition[1]);
+        ship.angle = 0;
+        ship.collisionBox.setPosition(ship.initPosition[0], ship.initPosition[1]);
     }
 };
 

@@ -10,17 +10,37 @@
 class MoonScene : public threepp::Scene {
 private:
     std::shared_ptr<threepp::OrthographicCamera> camera_;
+    int canvasSize;
+    bool zooming = false;
 public:
-    MoonScene() {
-        int size = 100;
+    MoonScene(int size) {
+        this->canvasSize = size;
 
-        camera_ = threepp::OrthographicCamera::create(-size, size, -size, size);
-        camera_->position.set(static_cast<float>(size), static_cast<float>(size), static_cast<float>(size));
+        camera_ = threepp::OrthographicCamera::create(-canvasSize/2, canvasSize/2, -canvasSize/2, canvasSize/2);
+        camera_->position.set(static_cast<float>(canvasSize/2), static_cast<float>(canvasSize/2), static_cast<float>(canvasSize/2));
         add(camera_);
     }
 
     void addObject(std::shared_ptr<threepp::Mesh> object) {
         add(object);
+    }
+
+    void zoomIn() {
+        zooming = true;
+        camera_->scale = {0.4, 0.4, 1};
+    }
+    void zoomOut() {
+        zooming = false;
+        camera_->scale = {1, 1, 1};
+    }
+    void setCameraPosition(std::vector<float> position) {
+        if (zooming) {
+            camera_->position.set(static_cast<float>(position[0]), static_cast<float>(position[1]),
+                                  static_cast<float>(canvasSize / 2));
+        } else {
+            camera_->position.set(static_cast<float>(position[0]), static_cast<float>(canvasSize / 2),
+                                  static_cast<float>(canvasSize / 2));
+        }
     }
 
     threepp::OrthographicCamera &camera() const {
