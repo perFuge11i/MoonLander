@@ -1,8 +1,7 @@
 #ifndef MOONLANDER_AABB_HPP
 #define MOONLANDER_AABB_HPP
 
-// Hele fra chatGPT(modifisert) utenom intersect
-// AABB og intersect konsept fra video https://www.youtube.com/watch?v=oOEnWQZIePs
+// Hele fra chatGPT(modifisert) utenom getEdges()
 
 #include <iostream>
 
@@ -27,20 +26,13 @@ public:
         this->height = height;
     }
 
-    bool intersects(const AABB &other) const {
+    std::vector<float> getEdges() const {
         float right = x + width / 2;
-        float rightOther = other.x + other.width / 2;
         float left = x - width / 2;
-        float leftOther = other.x - other.width / 2;
         float bottom = y + height / 2;
-        float bottomOther = other.y + other.height / 2;
         float top = y - height / 2;
-        float topOther = other.y - other.height / 2;
 
-        return (left < rightOther &&
-                leftOther < right &&
-                top < bottomOther &&
-                topOther < bottom);
+        return {right, left, bottom, top};
     }
 };
 

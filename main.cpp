@@ -9,7 +9,6 @@ int main() {
     threepp::Canvas canvas("LunarLander");
     threepp::GLRenderer renderer(canvas.size());;
     canvas.addKeyListener(&game.getUI());
-
     threepp::Clock clock;
     canvas.animate([&]() {
         float dt = clock.getDelta();

@@ -21,6 +21,8 @@ private:
     Landscape lunarSurface;
     UI keyInputs;
     PhysicsEngine rocketPhysics;
+
+    bool collision = false;
 public:
 
     LunarLanderGame() : lunarSurface(0, 160), rocketPhysics(10, 0), lunarLander(30, 30), scene(200) {
@@ -108,11 +110,14 @@ public:
 
     void update(const float dt) {
         std::vector<float> movement;
-
+        std::vector<int> closeLines;
         bool isClose = false;
         for (const auto line: lunarSurface.getLines()) {
-            if (lunarLander.getShip().collisionBox.intersects(line.collisionBox)) {
+            if (rocketPhysics.AABBcollision(lunarLander.getShip(), line)) {
                 isClose = true;
+                if (rocketPhysics.GJKcollision(lunarLander.getShip(), line)) {
+                    collision = true;
+                }
             }
         }
         if (isClose) {
@@ -124,9 +129,9 @@ public:
         if (keyInputs.searchCommands("RESET")) {
             lunarLander.reset();
             rocketPhysics.reset();
+            collision = false;
         }
 
-        bool collision = false;
         if (!collision) {
             if (keyInputs.searchCommands("LEFT")) {
                 lunarLander.rotate(-1, dt);

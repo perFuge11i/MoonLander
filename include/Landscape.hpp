@@ -2,7 +2,7 @@
 #define MOONLANDER_LANDSCAPE_HPP
 
 //Forslag om å bruke struct fra chatGPT, "xOrY", "sign" og "getEnd()" funksjon lagt til selv
-
+//getSupportPoints() konsept fra video https://www.youtube.com/watch?v=ajv46BSqcK4
 
 #include "threepp/threepp.hpp"
 #include "AABB.hpp"
@@ -14,16 +14,30 @@ private:
     struct lineObject {
         std::shared_ptr<threepp::Mesh> mesh;
         AABB collisionBox;
+        std::vector<float> position;
+        std::vector<float> scale;
         float angle;
-        int length;
 
         std::vector<float> getEnd() {
-            std::vector<float> endDimensions;
+            return {this->mesh->position.x + cos(this->angle)*this->scale[0]/2,
+                    this->mesh->position.y - sin(this->angle)*this->scale[0]/2};
+        }
+        std::vector<std::vector<float>> getVertices() const {
+            std::vector<float> xAxisVector = {cos(-this->angle), sin(-this->angle)};
+            std::vector<float> yAxisVector = {-xAxisVector[1], xAxisVector[0]};
+            std::vector<float> xVector = {xAxisVector[0]*this->scale[0]/2, xAxisVector[1]*this->scale[0]/2};
+            std::vector<float> yVector = {yAxisVector[0]*this->scale[1]/2, yAxisVector[1]*this->scale[1]/2};
 
-            endDimensions = {this->mesh->position.x + cos(this->angle)*this->length/2,
-                             this->mesh->position.y - sin(this->angle)*this->length/2};
+            std::vector<float> vertex1 = {this->position[0] + xVector[0] + yVector[0],
+                                          this->position[1] + xVector[1] + yVector[1]};
+            std::vector<float> vertex2 = {this->position[0] - xVector[0] + yVector[0],
+                                          this->position[1] - xVector[1] + yVector[1]};
+            std::vector<float> vertex3 = {this->position[0] + xVector[0] - yVector[0],
+                                          this->position[1] + xVector[1] - yVector[1]};
+            std::vector<float> vertex4 = {this->position[0] - xVector[0] - yVector[0],
+                                          this->position[1] - xVector[1] - yVector[1]};
 
-            return endDimensions;
+            return {vertex1, vertex2, vertex3, vertex4};
         }
     };
 
@@ -39,11 +53,14 @@ public:
         lineObject line;
         line.mesh = threepp::Mesh::create(geometry, material);
 
-        line.mesh->scale.set(0, 0, 0);
-        line.mesh->position.x = x;
-        line.mesh->position.y = y;
+        line.scale = {0,0,0};
+        line.position = {static_cast<float>(x),static_cast<float>(y)};
 
-        line.collisionBox.setPosition(x, y);
+        line.mesh->scale.set(0, 0, 0);
+        line.mesh->position.x = line.position[0];
+        line.mesh->position.y = line.position[1];
+
+        line.collisionBox.setPosition(line.position[0], line.position[1]);
         line.collisionBox.setSize(0, 0);
 
         lines.push_back(line);
@@ -62,16 +79,19 @@ public:
         lineObject line;
         line.mesh = threepp::Mesh::create(geometry, material);
 
-        line.mesh->scale.set(length, 0.5, 0);
-        line.mesh->position.x = lastLineEnd[0] + cos(angle)*length / 2;
-        line.mesh->position.y = lastLineEnd[1] - sin(angle)*length / 2;
-        line.mesh->rotation.z -= angle;
-        line.length = length;
+        line.scale = {static_cast<float>(length),0.5,0};
         line.angle = angle;
+        line.position = {lastLineEnd[0] + cos(line.angle)*line.scale[0] / 2,
+                         lastLineEnd[1] - sin(line.angle)*line.scale[0] / 2};
 
-        line.collisionBox.setSize(cos(angle)*length, sin(angle)*length);
-        line.collisionBox.setPosition(lastLineEnd[0] + cos(angle)*length / 2, lastLineEnd[1] - sin(angle)*length / 2);
+        line.mesh->scale.set(line.scale[0], line.scale[1], line.scale[2]);
+        line.mesh->position.x = line.position[0];
+        line.mesh->position.y = line.position[1];
+        line.mesh->rotation.z -= line.angle;
 
+        line.collisionBox.setSize(cos(line.angle)*line.scale[0], sin(line.angle)*line.scale[0]);
+        line.collisionBox.setPosition(line.position[0],
+                                      line.position[1]);
         lines.push_back(line);
     }
 
