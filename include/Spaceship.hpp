@@ -4,6 +4,7 @@
 #include "threepp/threepp.hpp"
 #include "AABB.hpp"
 #include <vector>
+#include <iostream>
 
 //samme som i "Landscape.hpp", struct fra chatGPT
 
@@ -15,7 +16,7 @@ private:
         std::vector<float> initPosition;
         std::vector<float> position;
         std::vector<float> scale;
-        float angle = 0;
+        float angle = M_PI_2;
 
         std::vector<std::vector<float>> getVertices() {
             std::vector<float> xAxisVector = {cos(this->angle), sin(this->angle)};
@@ -37,19 +38,18 @@ private:
     };
 
     shipObject ship;
+    threepp::TextureLoader textureLoader;
 public:
     Spaceship(int x, int y) {
-        std::shared_ptr<threepp::BoxGeometry> boxGeometry;
-        std::shared_ptr<threepp::MeshBasicMaterial> material;
-
         ship.initPosition = {static_cast<float>(x), static_cast<float>(y)};
         ship.position = ship.initPosition;
-        ship.scale = {2,2,0};
+        ship.scale = {1.5,1.5,0};
 
-        boxGeometry = threepp::BoxGeometry::create(ship.scale[0], ship.scale[1], 0);
-        material = threepp::MeshBasicMaterial::create();
+        auto boxGeometry = threepp::BoxGeometry::create(ship.scale[0], ship.scale[1], 0);
+        auto material = threepp::MeshBasicMaterial::create(/*{{"map", textureLoader.load("../data/textures/Spaceship_test2.png")}}*/);
         ship.mesh = threepp::Mesh::create(boxGeometry, material);
 
+        ship.mesh->rotation.z = ship.angle;
         ship.mesh->position.x = ship.position[0];
         ship.mesh->position.y = ship.position[1];
         ship.collisionBox.setPosition(x, y);
@@ -68,8 +68,12 @@ public:
         ship.collisionBox.setPosition(ship.position[0], ship.position[1]);
     }
     void rotate(int direction, float time) {
-        ship.mesh->rotation.z += direction*time;
-        ship.angle += direction*time;
+        float rotation = direction*time;
+        if (ship.angle+rotation >= 0 && ship.angle+rotation <= M_PI) {
+            ship.angle += rotation;
+        }
+        ship.mesh->rotation.z = ship.angle;
+
     }
     float getRotation() {
         return ship.angle;
@@ -84,7 +88,7 @@ public:
         ship.mesh->position.y = ship.initPosition[1];
         ship.position = ship.initPosition;
         ship.mesh->rotation.z = 0;
-        ship.angle = 0;
+        ship.angle = M_PI_2;
         ship.collisionBox.setPosition(ship.initPosition[0], ship.initPosition[1]);
     }
 };

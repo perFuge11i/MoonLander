@@ -18,19 +18,20 @@ private:
     std::vector<float> speed = {0,0};
     std::vector<float> initSpeed = {0,0};
     std::vector<float> force = {0,0};
-    const std::vector<float> g = {0,4};
+    const std::vector<float> g = {0,-4};
     const float rocketSpeedConstant = 0.2;
+    GJKengine GJK;
 public:
     PhysicsEngine(float initSpeedX, float initSpeedY) {
-        /*this->initSpeed = {initSpeedX, initSpeedY};
-        speed = initSpeed;*/
+        this->initSpeed = {initSpeedX, initSpeedY};
+        speed = initSpeed;
     }
     void calculateForce(float rotation) {
-        force = {rocketSpeedConstant*sin(rotation), -rocketSpeedConstant*cos(rotation)};
+        force = {rocketSpeedConstant*cos(rotation), rocketSpeedConstant*sin(rotation)};
     }
     std::vector<float> calculateNextMovement(float time) {
-        speed = {speed[0] + force[0] + g[0]*time, speed[1] + force[1] + g[1]*time};
-        distanceToTravel = {speed[0]*time, speed[1]*time};
+        speed = GJK.vectorAddition(GJK.vectorAddition(speed, force), GJK.scale(g, time));//{speed[0] + force[0] + g[0]*time, speed[1] + force[1] + g[1]*time};
+        distanceToTravel = GJK.scale(speed,time);//{speed[0]*time, speed[1]*time};
         force = {0,0};
         return distanceToTravel;
     }
@@ -48,24 +49,17 @@ public:
                 edges2[3] < edges1[2]);
     }
     bool GJKcollision(auto &body1, auto &body2) {
-        GJKengine GJK;
-
         //Initial direction
         std::vector<float> direction = GJK.vector(body1.position, body2.position);
-
         //Finding first supportPoint
         auto supportPointBody1 = GJK.supportFunction(direction,
                                                      body1.getVertices(),
                                                      body1.position);
-
         auto oppositeDirection = GJK.oppositeVector(direction);
-
         auto supportPointBody2 = GJK.supportFunction(oppositeDirection,
                                                      body2.getVertices(),
                                                      body2.position);
-
         auto minkowskiSupportPointA = GJK.vectorSubtraction(supportPointBody1, supportPointBody2);
-
         //Determining direction of next supportPoint
         direction = GJK.vector(minkowskiSupportPointA, {0, 0});
 
@@ -78,7 +72,6 @@ public:
                                                 body2.getVertices(),
                                                 body2.position);
         auto minkowskiSupportPointB = GJK.vectorSubtraction(supportPointBody1, supportPointBody2);
-
         //Checking if point passed origo
         if (!GJK.passedOrigo(minkowskiSupportPointB, direction)) {
             return false;
@@ -98,30 +91,25 @@ public:
                                                 body2.getVertices(),
                                                 body2.position);
         auto minkowskiSupportPointC = GJK.vectorSubtraction(supportPointBody1, supportPointBody2);
-
         //Checking if point passed origo
         if (!GJK.passedOrigo(minkowskiSupportPointC, direction)) {
-            //std::cout << "Point C didnt pass origo" << std::endl;
             return false;
         }
 
         bool bothPassed = false;
         while (!bothPassed) {
             bothPassed = true;
-
             //Checking if origo is contained in triangle ABC
             auto CA = GJK.vector(minkowskiSupportPointC, minkowskiSupportPointA);
             auto CB = GJK.vector(minkowskiSupportPointC, minkowskiSupportPointB);
             auto normalCB = GJK.crossProduct(GJK.crossProduct(CA, CB), CB);
             auto normalCA = GJK.crossProduct(GJK.crossProduct(CB, CA), CA);
             auto CO = GJK.vector(minkowskiSupportPointC, {0, 0});
-
             //Checking if origo is in sectorBC
             if (GJK.dotProduct(normalCB, CO) > 0) {
                 bothPassed = false;
                 //Update ABC points
                 minkowskiSupportPointA = minkowskiSupportPointC;
-
                 //Find new point C
                 direction = normalCB;
                 supportPointBody1 = GJK.supportFunction(direction,
@@ -152,11 +140,9 @@ public:
             //Check if any points overlap;
             if (minkowskiSupportPointC == minkowskiSupportPointB ||
                 minkowskiSupportPointC == minkowskiSupportPointA) {
-                //std::cout << "Points overlapped" << std::endl;
                 return false;
             }
         }
-
         return true;
     }
 };

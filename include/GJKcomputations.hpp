@@ -10,8 +10,11 @@ public:
     std::vector<float> vector(std::vector<float> p1, std::vector<float> p2) {
         return {p2[0]-p1[0], p2[1]-p1[1]};
     }
+    std::vector<float> vectorAddition(std::vector<float> v1, std::vector<float> v2) {
+        return {v1[0]+v2[0], v1[1]+v2[1]};
+    }
     std::vector<float> vectorSubtraction(std::vector<float> v1, std::vector<float> v2) {
-        return {v2[0]-v1[0], v2[1]-v1[1]};
+        return {v1[0]-v2[0], v1[1]-v2[1]};
     }
     std::vector<float> scale(std::vector<float> v1, float scalar) {
         return {v1[0]*scalar, v1[1]*scalar};
@@ -20,7 +23,7 @@ public:
         std::vector<float> oppositeVector;
 
         for (const auto value: vector) {
-            oppositeVector.push_back(value);
+            oppositeVector.push_back(-value);
         }
 
         return oppositeVector;
