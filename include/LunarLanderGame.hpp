@@ -29,10 +29,10 @@ private:
                                                     {3, M_PI_2},{2, 0},{5, M_PI_2 - M_PI_4/4},
                                                     {4, M_PI_4},{2, M_PI_2 - M_PI_4/4},{2, M_PI_2 - M_PI_4/8},
                                                     {3, M_PI/3},{2, 0},{7, M_PI_2 - M_PI_4/4},
-                                                    {2, M_PI/6},{3, -M_PI_4},{5, M_PI_2 - M_PI_4/4},
-                                                    {2, M_PI/6},{2, M_PI_2 - M_PI_4/8},{2, M_PI_4 + M_PI_4/4},
+                                                    {2, M_PI/6},{2, -M_PI_4},{2, 0},{2, M_PI_4},{5, M_PI_2 - M_PI_4/4},
+                                                    {2, M_PI/6},{1.5, M_PI_2 - M_PI_4/8},{2, M_PI_4 + M_PI_4/4},
                                                     {2, M_PI_4},{2, 0},{2, -(M_PI_2 - M_PI_4/4)},
-                                                    {2, 0},{2, -(M_PI_2 - M_PI_4/4)},{1, 0},
+                                                    {1.5, 0},{2, -(M_PI_2 - M_PI_4/4)},{1, 0},
                                                     {5, -(M_PI_2 - M_PI_4/8)},{5, -(M_PI_2 - M_PI_4/4)},{2, -M_PI_2},
                                                     {3, -(M_PI_2 - M_PI_4/6)},{3, -(M_PI_2 - M_PI_4)},{3, -(M_PI_2 - M_PI_4/8)},
                                                     {2, -(M_PI_2 - M_PI_4/3)},{2, -(M_PI_4 - M_PI_4/4)},{2, 0},
@@ -47,15 +47,43 @@ private:
                                                     {2, -(M_PI_4 + M_PI_4/4)},{3, -(M_PI_2 - M_PI_4/6)},{3, -M_PI/6},
                                                     {5, -(M_PI_2 - M_PI_4/6)},{5, -(M_PI_2 - M_PI_4/4)},{1, -M_PI_2},
                                                     {2, -(M_PI_4 - M_PI_4/4)},{3, 0},{5, M_PI_4},
-                                                    {2, M_PI_4 + M_PI_4/3},{2, M_PI_4},{2, M_PI_4 + M_PI_4/3},
-                                                    {2, M_PI_4 - M_PI_4/4},{5, M_PI_2 - M_PI_4/6},{2, M_PI_4 - M_PI_4/4}};
+                                                    {2, M_PI_4 + M_PI_4/3},{2, M_PI_4},{1, M_PI_4 + M_PI_4/3},
+                                                    {2, M_PI/6},{4, (M_PI_2 - M_PI_4/6)},{3, (M_PI_2 - M_PI_4/5)},
+                                                    {1.5, M_PI/6},{2, M_PI_4 + M_PI_4/4},{2, (M_PI_4 + M_PI_4/3)},
+                                                    {3, M_PI_4 + M_PI_4/2},{2, M_PI_4 + M_PI_2/3},{2, M_PI_4},
+                                                    {1.5, M_PI_4 + M_PI_4/2},{1, M_PI_4 + M_PI_2/3},
+                                                    {1.5, M_PI/3},{1,0},{1,M_PI_4},
+                                                    {2, M_PI/3},{2,M_PI_4},{6, M_PI_4 + M_PI/5},
+                                                    {3,M_PI_2},{2, M_PI_4 + 2*M_PI/9},{3, M_PI_4 + M_PI_2/3},
+                                                    {1, M_PI_2/3},{1, M_PI_4 + M_PI/6},{1.5, M_PI/3},
+                                                    {1,0},{1.5, -(M_PI_4 + M_PI/6)},
+                                                    {1.5,0},{1.5, -(M_PI_4 + M_PI/6)},{0.5,0},
+                                                    {1, -M_PI_2/3},{1,-M_PI/3},{2, -(M_PI_4 + M_PI/6)},
+                                                    {2, -M_PI_2/3},{5, -(M_PI_4 + M_PI/6)},{1, -M_PI_2/8},
+                                                    {1.5, -M_PI_2/2},{1, -(M_PI_4 + M_PI/6)},{1.5,-M_PI/3},
+                                                    {1, -(M_PI_4 + M_PI/6)},{1.5,-M_PI/3},{1.5,0},
+                                                    {4,-(M_PI_2 - M_PI_2/24)},{4, -(M_PI_4 + M_PI/6)},{1,-M_PI_2},
+                                                    {1,0},{1, -(M_PI_4 + M_PI/7)},{1.5,-M_PI/3},
+                                                    {3, -(M_PI_4 + M_PI/5)},{1.5, -(M_PI_4 + M_PI/8)},{2,-(M_PI/3 - M_PI_4/4)},
+                                                    {4,-(M_PI_2 - M_PI_2/24)},{4, -(M_PI_4 + M_PI/6)},{1,-M_PI_2},
+                                                    {1, -(M_PI_4 + M_PI/7)},{1.5,-(M_PI/3-M_PI_4/4)},{1,0},
+                                                    {2, -(M_PI_4 + M_PI/6)},{1, -(M_PI_4 + M_PI_4/6)},{3,-(M_PI/3 - M_PI_4/4)},
+                                                    {5,0},{4,M_PI_2 - M_PI_2/12},{3, M_PI_4 + M_PI/8},
+                                                    {2, M_PI_4 + M_PI/6},{0.5,M_PI_4/6},{2, M_PI_4 + M_PI/6},
+                                                    {1,M_PI/3 - M_PI_4/3},{2, M_PI_4 + M_PI/8},{1,M_PI/3 - M_PI_4},
+                                                    {1,M_PI/3 - M_PI_4/3},{1.5,0},{1, -(M_PI_4 + M_PI/6)},
+                                                    {4, -(M_PI_4 + M_PI/7)},{1,-(M_PI_2 - M_PI_2/8)},{1,-(M_PI_4+M_PI_4/6)},
+                                                    {1,-(M_PI_4-M_PI_4/4)},{1,-(M_PI_4+M_PI_4/6)},{2,-(M_PI_2 - M_PI_2/8)},
+                                                    {2,-(M_PI_4+M_PI_4/6)},{2,0},{2,-M_PI_4/6},
+                                                    {2,-(M_PI_4-M_PI_4/2)}};
 public:
 
-    LunarLanderGame() : lunarSurface(0, 40), rocketPhysics(10, 0), lunarLander(30, 120), scene(150) {
+    LunarLanderGame() : lunarSurface(0, 20), rocketPhysics(10, 0), lunarLander(75, 120), scene(150) {
         for (const auto line: surfaceLines) {
             lunarSurface.addLine(line[0], line[1]);
         }
         landscapeLength = lunarSurface.getLength();
+        landscapeBorder[1] += landscapeLength;
 
         for (const auto line: lunarSurface.getLines()) {
             scene.addObject(line.mesh);
@@ -106,7 +134,7 @@ public:
         //If the spaceship is closer than one 'landscape' instance away from the border to the right
         if (lunarLander.getPosition()[0] > landscapeBorder[1]-(landscapeLength+20)) {
             //Add a new 'landscape' instance at the right border
-            lunarSurface.newStartingPoint(landscapeBorder[1], 40);
+            lunarSurface.newStartingPoint(landscapeBorder[1], 20);
             for (const auto line: surfaceLines) {
                 lunarSurface.addLine(line[0], line[1]);
                 scene.addObject(lunarSurface.getLines().back().mesh);
@@ -116,7 +144,7 @@ public:
             //If the spaceship is closer than one 'landscape' instance away from the border to the left
         } else if (lunarLander.getPosition()[0] < landscapeBorder[0]+(landscapeLength+20)) {
             //Add a new 'landscape' instance at the left border
-            lunarSurface.newStartingPoint(landscapeBorder[0]-landscapeLength, 40);
+            lunarSurface.newStartingPoint(landscapeBorder[0]-landscapeLength, 20);
             for (const auto line: surfaceLines) {
                 lunarSurface.addLine(line[0], line[1]);
                 scene.addObject(lunarSurface.getLines().back().mesh);
@@ -124,7 +152,6 @@ public:
             //update left border
             landscapeBorder[0] -= landscapeLength;
         }
-
     }
 
     MoonScene &getScene() {

@@ -30,7 +30,7 @@ public:
     }
     void zoomOut() {
         zooming = false;
-        camera_->scale = {1, 1, 1};
+        camera_->scale = {1.4, 1, 1};
     }
     void setCameraPosition(std::vector<float> position) {
         if (zooming) {
