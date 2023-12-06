@@ -10,4 +10,5 @@ find_package(threepp CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 
 add_executable(main main.cpp)
+add_executable(tests Test/Tests.cpp)
 target_link_libraries(main PRIVATE threepp::threepp imgui::imgui)
