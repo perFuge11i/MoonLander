@@ -17,6 +17,7 @@ private:
         std::vector<float> position;
         std::vector<float> scale;
         float angle = M_PI_2;
+        float fuel = 1000;
 
         std::vector<std::vector<float>> getVertices() {
             std::vector<float> xAxisVector = {cos(this->angle), sin(this->angle)};
@@ -78,9 +79,15 @@ public:
     float getRotation() {
         return ship.angle;
     }
-
     std::vector<float> getPosition() {
         return ship.position;
+    }
+
+    void useFuel() {
+        ship.fuel -= 1;
+    }
+    float getFuel() {
+        return ship.fuel;
     }
 
     void reset() {

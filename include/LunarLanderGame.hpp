@@ -1,18 +1,17 @@
 #ifndef MOONLANDER_LUNARLANDERGAME_HPP
 #define MOONLANDER_LUNARLANDERGAME_HPP
 
-//linje 26: innspill fra chatGPT
+//linje 82: innspill fra chatGPT (definere parametre for constructors)
 
 #include "MoonScene.hpp"
 #include "Spaceship.hpp"
 #include "Landscape.hpp"
 #include "UI.hpp"
 #include "PhysicsEngine.hpp"
+#include "HUD.hpp"
 #include <iostream>
 #include <string>
 #include <cmath>
-#include "threepp/threepp.hpp"
-
 
 class LunarLanderGame {
 private:
@@ -21,6 +20,11 @@ private:
     Landscape lunarSurface;
     UI keyInputs;
     PhysicsEngine rocketPhysics;
+    HUD HUD;
+
+    float time = 0;
+    float score = 0;
+    float altitude = 0;
 
     bool collision = false;
     float landscapeLength = 0;
@@ -86,14 +90,19 @@ public:
         landscapeBorder[1] += landscapeLength;
 
         for (const auto line: lunarSurface.getLines()) {
-            scene.addObject(line.mesh);
+            scene.addToScene(line.mesh);
         }
-        scene.addObject(lunarLander.getShip().mesh);
+        scene.addToScene(lunarLander.getShip().mesh);
+        scene.addToScene(HUD.getHUD());
+        HUD.setElement("Fuel", lunarLander.getFuel());
+        HUD.setElement("Score", score);
     }
 
     void update(const float dt) {
         std::vector<float> movement;
         bool isClose = false;
+        time += dt;
+        HUD.setTime(time);
 
         if (keyInputs.searchCommands("RESET")) {
             lunarLander.reset();
@@ -107,6 +116,8 @@ public:
                     isClose = true;
                     if (rocketPhysics.GJKcollision(lunarLander.getShip(), line)) {
                         collision = true;
+                        score += 50;
+                        HUD.setElement("Score", score);
                     }
                 }
             }
@@ -124,20 +135,30 @@ public:
             }
             if (keyInputs.searchCommands("FORWARD")) {
                 rocketPhysics.calculateForce(lunarLander.getRotation());
+                lunarLander.useFuel();
+                HUD.setElement("Fuel", lunarLander.getFuel());
             }
 
             movement = rocketPhysics.calculateNextMovement(dt);
             lunarLander.move(movement);
-            scene.setCameraPosition(lunarLander.getPosition());
-        }
 
+            scene.setCameraPosition(lunarLander.getPosition());
+            HUD.setPosition(scene.getCameraPosition());
+            HUD.setScale(scene.getCameraScale());
+
+            if (static_cast<int>(time*100)%20 < 1) {
+                //HUD.setElement("Altitude", lunarLander.getPosition()[1]-lunarSurface.closestHeightBelow(lunarLander.getPosition()[0])-2);
+                HUD.setElement("Horizontal Speed", static_cast<int>(movement[0] * 100));
+                HUD.setElement("Vertical Speed", static_cast<int>(movement[1] * 100));
+            }
+        }
         //If the spaceship is closer than one 'landscape' instance away from the border to the right
         if (lunarLander.getPosition()[0] > landscapeBorder[1]-(landscapeLength+20)) {
             //Add a new 'landscape' instance at the right border
             lunarSurface.newStartingPoint(landscapeBorder[1], 20);
             for (const auto line: surfaceLines) {
                 lunarSurface.addLine(line[0], line[1]);
-                scene.addObject(lunarSurface.getLines().back().mesh);
+                scene.addToScene(lunarSurface.getLines().back().mesh);
             }
             //update right boundary
             landscapeBorder[1] += landscapeLength;
@@ -147,7 +168,7 @@ public:
             lunarSurface.newStartingPoint(landscapeBorder[0]-landscapeLength, 20);
             for (const auto line: surfaceLines) {
                 lunarSurface.addLine(line[0], line[1]);
-                scene.addObject(lunarSurface.getLines().back().mesh);
+                scene.addToScene(lunarSurface.getLines().back().mesh);
             }
             //update left border
             landscapeBorder[0] -= landscapeLength;

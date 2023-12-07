@@ -97,6 +97,18 @@ public:
     std::vector<lineObject> getLines() {
         return lines;
     }
+    float closestHeightBelow(float x) {
+        float y = 0;
+        float closestX = lines.back().position[0];
+        for (const auto line: lines) {
+            if (abs(closestX-x) < abs(line.position[0]-x)) {
+                y = line.position[1];
+                break;
+            }
+            closestX = line.position[0];
+        }
+        return y;
+    }
 
     float getLength() {
         return lines.back().getEnd()[0] - lines[0].getEnd()[0];
@@ -128,6 +140,7 @@ public:
 
         return lastLineEnd;
     }
+
 };
 
 #endif //MOONLANDER_LANDSCAPE_HPP

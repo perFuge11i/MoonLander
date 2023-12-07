@@ -20,8 +20,17 @@ public:
         add(camera_);
     }
 
-    void addObject(std::shared_ptr<threepp::Mesh> object) {
+    void addToScene(auto object) {
         add(object);
+    }
+    void removeFromScene(auto object) {
+        remove(*object);
+    }
+    void addToCamera(auto object) {
+        camera_->add(object);
+    }
+    void removeFromCamera(auto object) {
+        camera_->remove(object);
     }
 
     void zoomIn() {
@@ -30,7 +39,7 @@ public:
     }
     void zoomOut() {
         zooming = false;
-        camera_->scale = {1.4, 1, 1};
+        camera_->scale = {1, 1, 1};
     }
     void setCameraPosition(std::vector<float> position) {
         if (zooming) {
@@ -43,6 +52,10 @@ public:
     }
     std::vector<float> getCameraPosition() {
         return {static_cast<float>(camera_->position.x), static_cast<float>(camera_->position.y)};
+    }
+
+    float getCameraScale() {
+        return camera_->scale.x;
     }
 
     threepp::OrthographicCamera &camera() const {
