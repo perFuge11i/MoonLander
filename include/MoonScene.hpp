@@ -2,6 +2,7 @@
 #define MOONLANDER_MOONSCENE_HPP
 
 // kamera konfigurasjon og "camera()" funksjon hentet fra "snake" eksempel i "threepp"
+// reset() funksjon, og alle applikasjoner av objects vektoren, fra chatGPT
 
 #include "Landscape.hpp"
 #include "threepp/threepp.hpp"
@@ -9,6 +10,7 @@
 
 class MoonScene : public threepp::Scene {
 private:
+    std::vector<std::shared_ptr<threepp::Object3D>> objects;
     std::shared_ptr<threepp::OrthographicCamera> camera_;
     int canvasSize;
     bool zooming = false;
@@ -22,15 +24,16 @@ public:
 
     void addToScene(auto object) {
         add(object);
+        objects.push_back(object);
     }
     void removeFromScene(auto object) {
         remove(*object);
-    }
-    void addToCamera(auto object) {
-        camera_->add(object);
-    }
-    void removeFromCamera(auto object) {
-        camera_->remove(object);
+
+        auto it = std::find(objects.begin(), objects.end(), object);
+
+        if (it != objects.end()) {
+            objects.erase(it);
+        }
     }
 
     void zoomIn() {
@@ -53,13 +56,17 @@ public:
     std::vector<float> getCameraPosition() {
         return {static_cast<float>(camera_->position.x), static_cast<float>(camera_->position.y)};
     }
-
     float getCameraScale() {
         return camera_->scale.x;
     }
-
     threepp::OrthographicCamera &camera() const {
         return *camera_;
+    }
+    void reset() {
+        for (auto& object : objects) {
+            remove(*object);
+        }
+        objects.clear();
     }
 };
 

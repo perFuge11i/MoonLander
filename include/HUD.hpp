@@ -26,7 +26,7 @@ public:
         auto material = threepp::MeshBasicMaterial::create();
         material->color.setHex(0xffffff);
 
-        headers = {"Score", "Time", "Fuel", "Altitude", "Horizontal Speed", "Vertical Speed"};
+        headers = {"Score", "Time", "Fuel"};//, "Altitude", "Horizontal Speed", "Vertical Speed"};
         lastString = {"","","","","",""};
 
         rows = {-72, 32, -60, 66};
@@ -92,7 +92,6 @@ public:
         }
         lastString[index] = timeString;
     }
-
 };
 
 #endif //MOONLANDER_HUD_HPP

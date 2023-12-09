@@ -3,6 +3,7 @@
 
 // AABBcollision() konsept fra video https://www.youtube.com/watch?v=oOEnWQZIePs
 // GJKcollision() konsept fra video https://www.youtube.com/watch?v=ajv46BSqcK4
+// generateRandomNumber() fra chatGPT
 
 //Should be a lib not a class
 
@@ -11,6 +12,7 @@
 #include <iostream>
 #include "AABB.hpp"
 #include "GJKcomputations.hpp"
+#include <random>
 
 class PhysicsEngine {
 private:
@@ -144,6 +146,16 @@ public:
             }
         }
         return true;
+    }
+    bool isSoftLanding(float angleOfShip, float angleOfSurface) {
+        std::vector<float> speedLimit = {3, -5};
+        float angleVarianceLimit = 0.4;
+        std::cout << angleOfShip << " , " << angleOfSurface << " , " << speed[0] << " , " << speed[1] << std::endl;
+        return (speed[0] < speedLimit[0] &&
+                speed[1] > speedLimit[1] &&
+                angleOfShip > M_PI_2-angleVarianceLimit &&
+                angleOfShip < M_PI_2+angleVarianceLimit &&
+                angleOfSurface == 0);
     }
 };
 

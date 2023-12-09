@@ -16,8 +16,8 @@ private:
         std::vector<float> initPosition;
         std::vector<float> position;
         std::vector<float> scale;
-        float angle = M_PI_2;
-        float fuel = 1000;
+        float angle = 0;
+        float fuel = 0;
 
         std::vector<std::vector<float>> getVertices() {
             std::vector<float> xAxisVector = {cos(this->angle), sin(this->angle)};
@@ -38,6 +38,8 @@ private:
         }
     };
 
+    std::shared_ptr<threepp::Mesh> explosionMesh;
+
     shipObject ship;
     threepp::TextureLoader textureLoader;
 public:
@@ -45,16 +47,21 @@ public:
         ship.initPosition = {static_cast<float>(x), static_cast<float>(y)};
         ship.position = ship.initPosition;
         ship.scale = {1.5,1.5,0};
+        ship.angle = M_PI_2;
+        ship.fuel = 1000;
 
-        auto boxGeometry = threepp::BoxGeometry::create(ship.scale[0], ship.scale[1], 0);
-        auto material = threepp::MeshBasicMaterial::create(/*{{"map", textureLoader.load("../data/textures/Spaceship_test2.png")}}*/);
-        ship.mesh = threepp::Mesh::create(boxGeometry, material);
-
+        auto shipGeometry = threepp::BoxGeometry::create(ship.scale[0], ship.scale[1], 0);
+        auto shipMaterial = threepp::MeshBasicMaterial::create(/*{{"map", textureLoader.load("../data/textures/Spaceship_test2.png")}}*/);
+        ship.mesh = threepp::Mesh::create(shipGeometry, shipMaterial);
         ship.mesh->rotation.z = ship.angle;
         ship.mesh->position.x = ship.position[0];
         ship.mesh->position.y = ship.position[1];
         ship.collisionBox.setPosition(x, y);
         ship.collisionBox.setSize(ship.scale[0] + 20, ship.scale[1] + 20);
+
+        auto explosionGeometry = threepp::BoxGeometry::create(ship.scale[0]*4, ship.scale[1]*4, 0);
+        auto explosionMaterial = threepp::MeshBasicMaterial::create({{"map", textureLoader.load("../data/textures/explosion.png")}});
+        explosionMesh = threepp::Mesh::create(explosionGeometry, explosionMaterial);
     }
 
     shipObject &getShip() {
@@ -89,14 +96,18 @@ public:
     float getFuel() {
         return ship.fuel;
     }
-
-    void reset() {
+    void crash() {
         ship.mesh->position.x = ship.initPosition[0];
         ship.mesh->position.y = ship.initPosition[1];
         ship.position = ship.initPosition;
         ship.mesh->rotation.z = 0;
         ship.angle = M_PI_2;
         ship.collisionBox.setPosition(ship.initPosition[0], ship.initPosition[1]);
+    }
+    auto getExplosion() {
+        explosionMesh->rotation.z = ship.angle;
+        explosionMesh->position = {ship.position[0], ship.position[1], ship.position[2]};
+        return explosionMesh;
     }
 };
 
