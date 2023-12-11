@@ -8,14 +8,14 @@
 #include "threepp/threepp.hpp"
 #include <iostream>
 
-class MoonScene : public threepp::Scene {
+class GameScene : public threepp::Scene {
 private:
     std::vector<std::shared_ptr<threepp::Object3D>> objects;
     std::shared_ptr<threepp::OrthographicCamera> camera_;
     int canvasSize;
     bool zooming = false;
 public:
-    MoonScene(int size) {
+    GameScene(int size) {
         this->canvasSize = size;
         camera_ = threepp::OrthographicCamera::create(-canvasSize/2, canvasSize/2, canvasSize/2, -canvasSize/2);
         camera_->position.set(static_cast<float>(canvasSize/2), static_cast<float>(canvasSize/2), static_cast<float>(canvasSize/2));
@@ -28,7 +28,7 @@ public:
     }
     void removeFromScene(auto object) {
         remove(*object);
-
+        //remove object from 'objects'
         auto it = std::find(objects.begin(), objects.end(), object);
 
         if (it != objects.end()) {
@@ -42,7 +42,7 @@ public:
     }
     void zoomOut() {
         zooming = false;
-        camera_->scale = {1, 1, 1};
+        camera_->scale = {0.8, 0.8, 1};
     }
     void setCameraPosition(std::vector<float> position) {
         if (zooming) {
@@ -61,6 +61,15 @@ public:
     }
     threepp::OrthographicCamera &camera() const {
         return *camera_;
+    }
+    bool isInScene(auto object) {
+        int inScene = false;
+        for (const auto obj: objects) {
+            if (obj == object) {
+                inScene = true;
+            }
+        }
+        return inScene;
     }
     void reset() {
         for (auto& object : objects) {

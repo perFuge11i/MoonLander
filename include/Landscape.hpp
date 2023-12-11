@@ -1,7 +1,7 @@
 #ifndef MOONLANDER_LANDSCAPE_HPP
 #define MOONLANDER_LANDSCAPE_HPP
 
-//Forslag om å bruke struct fra chatGPT, getEnd() og getVertices() laget selv
+//Linje 17: Forslag om å bruke struct fra chatGPT, getEnd() og getVertices() laget selv
 //Random number generation fra chatGPT
 
 #include "threepp/threepp.hpp"
@@ -12,7 +12,7 @@
 #include <algorithm>
 #include <random>
 
-class Landscape {
+class Surface {
 private:
     struct lineObject {
         std::shared_ptr<threepp::Mesh> mesh;
@@ -61,9 +61,8 @@ private:
     };
 
     std::vector<lineObject> lines;
-    std::vector<std::vector<int>> multipliers;
 public:
-    Landscape(const int x, const int y) {
+    Surface(const int x, const int y) {
         newStartingPoint(x,y);
     }
     void addLine(float length, float angle) {
@@ -99,7 +98,7 @@ public:
     std::vector<lineObject>& getLines() {
         return lines;
     }
-    /*float closestHeightBelow(float x) {
+    float closestHeightBelow(float x) {
         float y = 0;
         float closestX = lines.back().position[0];
         for (const auto line: lines) {
@@ -110,7 +109,7 @@ public:
             closestX = line.position[0];
         }
         return y;
-    }*/
+    }
     std::vector<int> findPlateauIndexes(int startIndex, int endIndex) {
         std::vector<std::pair<int, float>> indexedHeights;
         for (int i = startIndex; i < endIndex; i++) {
@@ -158,11 +157,7 @@ public:
         line.collisionBox.setPosition(line.position[0], line.position[1]);
         line.collisionBox.setSize(0, 0);
 
-        //std::vector<float> lastLineEnd = lines.back().getEnd();
-
         lines.push_back(line);
-
-        //return lastLineEnd;
     }
     void setMultiplier(int multiplier, int numberOfMultipliers, std::vector<float> levelAsFractionOfPlateaus, std::vector<int> range) {
         int n = numberOfMultipliers;

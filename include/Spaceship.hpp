@@ -51,9 +51,9 @@ public:
         ship.fuel = 1000;
 
         auto shipGeometry = threepp::BoxGeometry::create(ship.scale[0], ship.scale[1], 0);
-        auto shipMaterial = threepp::MeshBasicMaterial::create(/*{{"map", textureLoader.load("../data/textures/Spaceship_test2.png")}}*/);
+        auto shipMaterial = threepp::MeshBasicMaterial::create({{"map", textureLoader.load("../data/textures/spaceship.png")}});
         ship.mesh = threepp::Mesh::create(shipGeometry, shipMaterial);
-        ship.mesh->rotation.z = ship.angle;
+        ship.mesh->rotation.z = M_PI_2;
         ship.mesh->position.x = ship.position[0];
         ship.mesh->position.y = ship.position[1];
         ship.collisionBox.setPosition(x, y);
@@ -91,7 +91,7 @@ public:
     }
 
     void useFuel() {
-        ship.fuel -= 1;
+        ship.fuel -= 0.5;
     }
     float getFuel() {
         return ship.fuel;
@@ -100,7 +100,7 @@ public:
         ship.mesh->position.x = ship.initPosition[0];
         ship.mesh->position.y = ship.initPosition[1];
         ship.position = ship.initPosition;
-        ship.mesh->rotation.z = 0;
+        ship.mesh->rotation.z = M_PI_2;
         ship.angle = M_PI_2;
         ship.collisionBox.setPosition(ship.initPosition[0], ship.initPosition[1]);
     }

@@ -5,14 +5,11 @@
 // GJKcollision() konsept fra video https://www.youtube.com/watch?v=ajv46BSqcK4
 // generateRandomNumber() fra chatGPT
 
-//Should be a lib not a class
 
-#include <vector>
-#include <cmath>
-#include <iostream>
 #include "AABB.hpp"
 #include "GJKcomputations.hpp"
 #include <random>
+#include <vector>
 
 class PhysicsEngine {
 private:
@@ -21,7 +18,7 @@ private:
     std::vector<float> initSpeed = {0,0};
     std::vector<float> force = {0,0};
     const std::vector<float> g = {0,-4};
-    const float rocketSpeedConstant = 0.2;
+    const float speedConstant = 0.2;
     GJKengine GJK;
 public:
     PhysicsEngine(float initSpeedX, float initSpeedY) {
@@ -29,11 +26,12 @@ public:
         speed = initSpeed;
     }
     void calculateForce(float rotation) {
-        force = {rocketSpeedConstant*cos(rotation), rocketSpeedConstant*sin(rotation)};
+        force = {speedConstant*cos(rotation), speedConstant*sin(rotation)};
     }
     std::vector<float> calculateNextMovement(float time) {
-        speed = GJK.vectorAddition(GJK.vectorAddition(speed, force), GJK.scale(g, time));//{speed[0] + force[0] + g[0]*time, speed[1] + force[1] + g[1]*time};
-        distanceToTravel = GJK.scale(speed,time);//{speed[0]*time, speed[1]*time};
+        //Add vectors for speed force, and the gravitational pull
+        speed = GJK.vectorAddition(GJK.vectorAddition(speed, force), GJK.scale(g, time));
+        distanceToTravel = GJK.scale(speed,time);
         force = {0,0};
         return distanceToTravel;
     }
@@ -148,9 +146,9 @@ public:
         return true;
     }
     bool isSoftLanding(float angleOfShip, float angleOfSurface) {
-        std::vector<float> speedLimit = {3, -5};
-        float angleVarianceLimit = 0.4;
-        std::cout << angleOfShip << " , " << angleOfSurface << " , " << speed[0] << " , " << speed[1] << std::endl;
+        std::vector<float> speedLimit = {2, -4};
+        float angleVarianceLimit = 0.2;
+        //If speed and angle falls within limits and the line is flat, the landing is soft
         return (speed[0] < speedLimit[0] &&
                 speed[1] > speedLimit[1] &&
                 angleOfShip > M_PI_2-angleVarianceLimit &&
