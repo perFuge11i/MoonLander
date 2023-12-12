@@ -1,14 +1,10 @@
 #ifndef MOONLANDER_PHYSICSENGINE_HPP
 #define MOONLANDER_PHYSICSENGINE_HPP
 
-// AABBcollision() konsept fra video https://www.youtube.com/watch?v=oOEnWQZIePs
-// GJKcollision() konsept fra video https://www.youtube.com/watch?v=ajv46BSqcK4
-// generateRandomNumber() fra chatGPT
+// AABBcollision() consept from video https://www.youtube.com/watch?v=oOEnWQZIePs
+// GJKcollision() consept from video https://www.youtube.com/watch?v=ajv46BSqcK4
 
-
-#include "AABB.hpp"
 #include "GJKcomputations.hpp"
-#include <random>
 #include <vector>
 
 class PhysicsEngine {
@@ -18,7 +14,7 @@ private:
     std::vector<float> initSpeed = {0,0};
     std::vector<float> force = {0,0};
     const std::vector<float> g = {0,-4};
-    const float speedConstant = 0.2;
+    const float speedConstant = 0.1;
     GJKengine GJK;
 public:
     PhysicsEngine(float initSpeedX, float initSpeedY) {

@@ -1,7 +1,7 @@
 #ifndef MOONLANDER_HUD_HPP
 #define MOONLANDER_HUD_HPP
 
-//line 27: Font from threepp library
+//Line 27: Font from threepp library
 
 #include "threepp/geometries/TextGeometry.hpp"
 #include "threepp/loaders/FontLoader.hpp"

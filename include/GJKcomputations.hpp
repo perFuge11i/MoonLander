@@ -1,8 +1,6 @@
 #ifndef MOONLANDER_GJKCOMPUTATIONS_HPP
 #define MOONLANDER_GJKCOMPUTATIONS_HPP
 
-//Should be a lib not a class
-
 #include <vector>
 
 class GJKengine {

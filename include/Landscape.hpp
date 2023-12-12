@@ -1,13 +1,12 @@
 #ifndef MOONLANDER_LANDSCAPE_HPP
 #define MOONLANDER_LANDSCAPE_HPP
 
-//Linje 17: Forslag om å bruke struct fra chatGPT, getEnd() og getVertices() laget selv
-//Random number generation fra chatGPT
+//Line 17: Idea of using struct from chatGPT, getEnd() and getVertices() made by ourselves
+//Line 171-174: Random number generation from chatGPT
 
 #include "threepp/threepp.hpp"
 #include "AABB.hpp"
 #include <cmath>
-#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <random>
@@ -71,14 +70,14 @@ public:
 
         geometry = threepp::BoxGeometry::create();
         material = threepp::MeshBasicMaterial::create();
-        material->color.setHex(0xFF0000);
+        material->color.setHex(0xb3b7bf);
 
         lineObject line;
         line.mesh = threepp::Mesh::create(geometry, material);
 
         std::vector<float> lastLineEnd = lines.back().getEnd();
 
-        line.scale = {length,0.2,0};
+        line.scale = {length,0.15,0};
         line.angle = angle;
         line.position = {lastLineEnd[0] + cos(line.angle)*line.scale[0] / 2,
                          lastLineEnd[1] + sin(line.angle)*line.scale[0] / 2};
@@ -102,7 +101,7 @@ public:
         float y = 0;
         float closestX = lines.back().position[0];
         for (const auto line: lines) {
-            if (abs(closestX-x) < abs(line.position[0]-x)) {
+            if (abs(closestX-x) > abs(line.position[0]-x)) {
                 y = line.position[1];
                 break;
             }
@@ -168,6 +167,7 @@ public:
         int randomIndex;
         int multiplierIndex;
         while (n > 0) {
+            //Generating random number
             std::random_device rd;
             std::mt19937 gen(rd());
             std::uniform_int_distribution<> distribution(minIndex, maxIndex);

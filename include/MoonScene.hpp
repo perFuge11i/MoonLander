@@ -1,12 +1,10 @@
 #ifndef MOONLANDER_MOONSCENE_HPP
 #define MOONLANDER_MOONSCENE_HPP
 
-// kamera konfigurasjon og "camera()" funksjon hentet fra "snake" eksempel i "threepp"
-// reset() funksjon, og alle applikasjoner av objects vektoren, fra chatGPT
+//Camera configuration and 'camera()' function from the "snake" example in "threepp"
+//reset() function, and all applications of the 'objects' vector, from chatGPT
 
-#include "Landscape.hpp"
 #include "threepp/threepp.hpp"
-#include <iostream>
 
 class GameScene : public threepp::Scene {
 private:
@@ -23,16 +21,20 @@ public:
     }
 
     void addToScene(auto object) {
-        add(object);
-        objects.push_back(object);
+        if (!isInScene(object)) {
+            add(object);
+            objects.push_back(object);
+        }
     }
     void removeFromScene(auto object) {
-        remove(*object);
-        //remove object from 'objects'
-        auto it = std::find(objects.begin(), objects.end(), object);
+        if (isInScene(object)) {
+            remove(*object);
+            //remove object from 'objects'
+            auto it = std::find(objects.begin(), objects.end(), object);
 
-        if (it != objects.end()) {
-            objects.erase(it);
+            if (it != objects.end()) {
+                objects.erase(it);
+            }
         }
     }
 

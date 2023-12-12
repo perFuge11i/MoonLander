@@ -4,7 +4,7 @@
 #include "threepp/threepp.hpp"
 #include <string>
 
-//Tilpasset fra "snake" eksempel
+//Modified from 'snake' example in threepp
 
 class UI : public threepp::KeyListener {
 private:

@@ -1,5 +1,5 @@
 
-//Utgangspunkt i "snake" eksempel fra "threepp"
+//Reworked from 'snake' example in "threepp"
 
 #include "LunarLanderGame.hpp"
 

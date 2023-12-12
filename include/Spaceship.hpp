@@ -4,7 +4,6 @@
 #include "threepp/threepp.hpp"
 #include "AABB.hpp"
 #include <vector>
-#include <iostream>
 
 //samme som i "Landscape.hpp", struct fra chatGPT
 

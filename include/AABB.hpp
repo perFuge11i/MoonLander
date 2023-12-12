@@ -1,9 +1,7 @@
 #ifndef MOONLANDER_AABB_HPP
 #define MOONLANDER_AABB_HPP
 
-// Hele fra chatGPT(modifisert) utenom getEdges()
-
-#include <iostream>
+//Whole class from chatGPT(Modified) except for getEdges()
 
 class AABB {
 private:
